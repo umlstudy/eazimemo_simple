@@ -1,3 +1,7 @@
+# build files
+*.js
+*.map
+
 # Logs
 logs
 *.log

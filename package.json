@@ -2,5 +2,10 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "build.common": "cd packages/p11.common;tsc;cd ../..",
+    "build.model": "cd packages/p11.common;tsc;cd ../..",
+    "start.model": "nodemon packages/p21.model/dist/index.js"
+  }
 }
