@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "es5", // target 은 javascript로 변환할때의 ECMA 버전이다
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "outDir": "out.test",
+    // outDir은 컴파일된 출력이 위치할 위치를 지정합니다.
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    // esModuleInterop을 사용하면 ES6 모듈을 commonjs 모듈로 컴파일할 수 있습니다.
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    // strict는 엄격한 유형 검사 옵션을 활성화하는 옵션입니다.
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "commonjs", 
+    // module을 사용하면 컴파일된 JavaScript 코드에서 
+    // 모듈 관리자를 사용할 수 있습니다. 
+    // commonjs 가 지원되며 Node.js의 표준입니다.
+    "rootDir": "./",
+    // rootDir은 Node.js 프로젝트 내에서 TypeScript 파일의 위치를 지정하는 옵션입니다.
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "include": [
+    "src.test/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@sejong/common",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {},
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  }
+}
