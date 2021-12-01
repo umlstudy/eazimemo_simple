@@ -1,9 +1,9 @@
 {
   "name": "@sejong/common",
   "version": "1.0.0",
+  "author": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "author": "",
   "license": "ISC",
   "devDependencies": {},
   "dependencies": {},

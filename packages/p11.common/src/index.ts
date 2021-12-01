@@ -1,5 +1,1 @@
-import { CommonUtil } from "./CommonUtil"
-
-export {}
-
-console.log(CommonUtil.getHello());
+export { CommonUtil } from "./CommonUtil";
