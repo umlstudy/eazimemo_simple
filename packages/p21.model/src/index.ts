@@ -1,4 +1,1 @@
-import { CommonUtil } from "@sejong/common/dist/CommonUtil";
-
-console.log(CommonUtil.getHello());
-console.log("aabb");
+export { MemoModel } from "./Models";

@@ -9,7 +9,11 @@ import { knexDefaultSetting } from '../src/KnexSetting';
 
 async function main() {
     console.log("----------------");
-    const setting = knexDefaultSetting;
+    const setting = { ...knexDefaultSetting
+        , "interfaceNameFormat": "${table}Model"
+        , "columnNameCasing": "camel"
+        , "tableNameCasing": "pascal"
+    };
     console.log("----------------");
     const definitions = await sqlts.toObject(setting)
     console.log("----------------");
