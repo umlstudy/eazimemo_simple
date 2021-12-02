@@ -1,7 +1,4 @@
-export { };
-
-// import { CommonUtil } from "@sejong/common/dist/CommonUtil"
-
+import { CommonUtil } from "@sejong/common/dist/CommonUtil";
 
 console.log(CommonUtil.getHello());
-console.log("aa");
+console.log("aabb");

@@ -1,6 +1,7 @@
 # build files
 *.js
 *.map
+*.sqlite
 
 # Logs
 logs
