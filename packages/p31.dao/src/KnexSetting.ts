@@ -1,4 +1,4 @@
-export const knexSetting = {
+const knexSetting = {
     development: {
         client: 'sqlite3',
         connection: {
@@ -39,3 +39,5 @@ export const knexSetting = {
         }
     }
 };
+
+export const knexDefaultSetting = knexSetting.development;

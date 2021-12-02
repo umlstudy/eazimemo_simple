@@ -1,4 +1,4 @@
 import knex from 'knex';
-import { knexSetting } from "./KnexSetting";
+import { knexDefaultSetting } from "./KnexSetting";
 
-export const knexConnection = knex(knexSetting.development);
+export const knexConnection = knex(knexDefaultSetting);
