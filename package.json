@@ -7,5 +7,8 @@
     "build.common": "cd packages/p11.common;tsc;cd ../..",
     "build.model": "cd packages/p21.model;tsc;cd ../..",
     "start.model": "nodemon packages/p21.model/dist/index.js"
+  },
+  "dependencies": {
+    "@rmp135/sql-ts": "^1.12.1"
   }
 }

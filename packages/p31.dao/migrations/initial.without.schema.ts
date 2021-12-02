@@ -1,10 +1,12 @@
 /* tslint:disable await-promise */
 
+import { LogUtil } from '@sejong/common';
 import knex, { Knex } from 'knex';
 
 // 실행
-// npx ts-node packages/p31.dao/migrations/initial.ts
-async function connect(connection: Record<string, string>) {
+// npx ts-node packages/p31.dao/migrations/initial.without.schema.ts
+async function connect(connection: Record<string, string>)
+    : Promise<Knex<any, unknown[]>> {
     const conn = {
         client: 'sqlite3',
         connection
@@ -18,90 +20,37 @@ async function connect(connection: Record<string, string>) {
 // https://github.com/bkonkle/node-knex-typescript-example/blob/master/src/utils/MigrationUtils.ts
 
 async function up(knex: Knex) {
-    // const schema = MigrationUtils.schema(knex)
 
-    // await knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
-    // await knex.raw(`CREATE SCHEMA ${schemaName};`);
+    const tableName = 'test_table';
 
-    // User
-    await knex.schema.createTableIfNotExists('User', table => {
-        // const columns = schema(table)
-        // columns.primaryUuid()
+    const exists = await knex.schema.hasTable(tableName);
 
-        table.timestamps(true, true)
+    // 1 테이블생성
+    if ( !exists ) {
+        await knex.schema.createTable(tableName, table => {
+            table.increments()
+            table.string("name")
+            table.string("description")
+        });
+    }
 
-        // Fields
-        table.string('username')
-            .unique()
-            //.notNullable()
-            .comment(`The User''s login id - usually their email address.`)
-
-        table.string('firstName')
-            .comment(`The User''s first name.`)
-
-        table.string('lastName')
-            .comment(`The User''s last name.`)
-
-        table.boolean('isActive')
-            .comment(`If false, the User is suspended.`)
-            //.notNullable()//.defaultTo(true)
-    });
-
-    // Address
-    await knex.schema.createTableIfNotExists('Address', table => {
-        // const columns = schema(table)
-        // columns.primaryUuid()
-
-        table.timestamps(true, true)
-
-        // Fields
-        table.string('line1').comment('The first line of the Address.')
-
-        table.string('line2').comment('The second line of the Address.')
-
-        table.string('city').comment('The city.')
-
-        table.string('state').comment('The state or province.')
-
-        table.string('country').comment('The country.')
-
-        table.string('postalCode').comment('The zip or other postal code.')
-
-        table.specificType('location', 'POINT')
-            .comment('The latitude and longitude of the Address.')
-    })
-
-    // Event
-    await knex.schema.createTableIfNotExists('Event', table => {
-        // const columns = schema(table)
-        // columns.primaryUuid()
-
-        table.timestamps(true, true)
-
-        // Fields
-        table.string('name').notNullable().comment(`The Event''s name.`)
-
-        table.text('description').comment(`The Event''s description`)
-
-        // // Relationships
-        // columns
-        //     .foreignUuid('user', { column: 'id', table: `${Database.schema}.User` }, true)
-        //     .comment('The User that created the Event.')
-
-        // columns
-        //     .foreignUuid('address', { column: 'id', table: `${Database.schema}.Address` })
-        //     .comment(`The Event''s Address.`)
-    })
+    // 2 기본값 입력
+    await knex(tableName).insert([
+        { name: "A", description: "A1" },
+        { name: "B", description: "BB1" },
+        { name: "C", description: "CCC1" },
+        { name: "D", description: "DDDD1" }
+    ])
 }
-
-// export function down(_knex: Knex) {
-//     throw new Error('Downward migrations are not supported. Restore from backup.')
-// }
 
 const connectionInfo = {
     filename: "./mydb.sqlite"
 };
 
-connect(connectionInfo)
-    .then((knexConn)=>up(knexConn));
+async function main() {
+    const knexConn = await connect(connectionInfo);
+    await up(knexConn);
+    LogUtil.debug('end');
+}
 
+main();
