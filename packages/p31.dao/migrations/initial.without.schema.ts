@@ -1,6 +1,6 @@
 /* tslint:disable await-promise */
 
-import { LogUtil } from '@sejong/common';
+import { SjLogUtil } from '@sejong/common';
 import { Knex } from 'knex';
 import { knexConnection } from '../src/KnexConfig';
 
@@ -42,7 +42,7 @@ class DbInitializer {
 
 async function main() {
     await DbInitializer.up(knexConnection);
-    LogUtil.debug('end');
+    SjLogUtil.debug('end');
 }
 
 main();

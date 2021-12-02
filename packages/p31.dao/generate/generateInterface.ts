@@ -1,5 +1,5 @@
 import sqlts from '@rmp135/sql-ts'
-import { LogUtil } from '@sejong/common';
+import { SjLogUtil } from '@sejong/common';
 import { knexDefaultSetting } from '../src/KnexSetting';
 
 // 실행
@@ -20,7 +20,7 @@ async function main() {
     const tsString = sqlts.fromObject(definitions, setting)
 
     console.log("----------------");
-    LogUtil.debug(tsString);
+    SjLogUtil.debug(tsString);
     console.log("================");
 }
 
