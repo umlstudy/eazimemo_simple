@@ -13,7 +13,8 @@
     "@sejong/common": "^1.0.0",
     "@sejong/model": "^1.0.0",
     "knex": "^0.95.14",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "@rmp135/sql-ts": "^1.12.1"
   },
   "scripts": {
     "build": "tsc",

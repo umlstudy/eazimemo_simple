@@ -10,11 +10,12 @@
     "build.dao": "cd packages/p31.dao;tsc;cd ../..",
     "build.biz": "cd packages/p41.biz;tsc;cd ../..",
     "build.fe": "cd packages/p51.fe;tsc;cd ../..",
-    "start.model": "nodemon packages/p21.model/dist/index.js"
+    "start.model": "nodemon packages/p21.model/dist/index.js",
+    "fedev": "nodemon 'packages/p51.fe/src/index.ts' --exec ts-node packages/p51.fe/src/index.ts -e ts,graphql",
+    "fedev3": "nodemon 'packages/p51.fe/src/server.ts' --exec 'ts-node' packages/p51.fe/src/server.ts -e ts,graphql",
+    "fedev2": "cd packages/p51.fe;nodemon packages/p51.fe/dist/index.js;cd ../.."
   },
-  "dependencies": {
-    "@rmp135/sql-ts": "^1.12.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",

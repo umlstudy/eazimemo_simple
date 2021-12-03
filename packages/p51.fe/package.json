@@ -1,0 +1,19 @@
+{
+  "name": "@sejong/fe",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.5.0",
+    "graphql": "^16.0.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.4.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  }
+}
