@@ -1,0 +1,40 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "import",
+        "react"
+    ],
+    "rules": {
+        "indent": [
+            "off",
+            4
+        ],
+        "linebreak-style": [
+            "off",
+            "unix"
+        ],
+        "quotes": [
+            "off",
+            "double"
+        ],
+        "semi": [
+            "off",
+            "always"
+        ],
+        "@typescript-eslint/no-empty-interface": 0
+    }
+}
