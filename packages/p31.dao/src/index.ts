@@ -1,1 +1,1 @@
-export { }
+export { AbsDao } from "./dao/AbsDao";

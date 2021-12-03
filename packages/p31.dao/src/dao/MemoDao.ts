@@ -1,5 +1,6 @@
 import { MemoModel } from "@sejong/model";
 import { Knex } from "knex";
+import { AbsDao } from "./AbsDao";
 
 export class MemoDao extends AbsDao {
 

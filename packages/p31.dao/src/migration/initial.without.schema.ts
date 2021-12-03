@@ -2,10 +2,10 @@
 
 import { SjLogUtil } from '@sejong/common';
 import { Knex } from 'knex';
-import { knexConnection } from '../src/KnexConfig';
+import { knexConnection } from '../KnexConfig';
 
 // 실행
-// npx ts-node packages/p31.dao/migrations/initial.without.schema.ts
+// npx ts-node packages/p31.dao/src/migration/initial.without.schema.ts
 
 // https://dev.to/asteinarson/typescript-node-js-importing-knex-into-es6-module-1poc
 // https://www.daleseo.com/js-dotenv/
@@ -38,7 +38,6 @@ class DbInitializer {
         // ])
     }
 }
-
 
 async function main() {
     await DbInitializer.up(knexConnection);
