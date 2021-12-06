@@ -4,7 +4,6 @@
 import { ApolloServer } from "apollo-server";
 import { gql } from "apollo-server-core";
 
-// your data.
 const typeDefs = gql`
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
