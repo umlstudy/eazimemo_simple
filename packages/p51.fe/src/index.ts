@@ -1,6 +1,5 @@
 
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
+// nodemon 'packages/p51.fe/src/index.ts
 
 import { ApolloServer } from "apollo-server";
 import { gql } from "apollo-server-core";

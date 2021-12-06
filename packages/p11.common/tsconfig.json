@@ -4,7 +4,7 @@
     "moduleResolution": "node",
     "declaration": true,
     "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "module": "esnext",                                /* Specify what module code is generated. */
+    "module": "commonjs",                                /* Specify what module code is generated. */
     "rootDir": "./src",
     "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
     "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
