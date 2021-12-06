@@ -19,27 +19,40 @@ const typeDefs = gql`
 
 //2.
 const books = [
-    {
-        title: 'The Awakening',
-        author: 'Kate Chopin',
-    },
-    {
-        title: 'City of Glass',
-        author: 'Paul Auster',
-    },
+  {
+    title: 'The Awakening',
+    author: 'Kate Chopin',
+  },
+  {
+    title: 'City of Glass',
+    author: 'Paul Auster',
+  },
 ];
 
 //3.
 const resolvers = {
-    Query: {
-        books: () => books,
-    },
+  Query: {
+    books: () => books,
+  },
+  Mutation: {
+    addBook: (root:any, args:any) => addBook(args),
+  }
 };
+
+const addBook = (args: any) => {
+  const { title, author } = args;
+  const data = {
+    title,
+    author
+  };
+  books.push(data);
+  return data;
+}
 
 //4.
 const server = new ApolloServer({ typeDefs, resolvers });
 
 //5.
 server.listen().then(({ url }) => {
-    console.log(`🚀  Server ready at ${url}`);
+  console.log(`🚀  Server ready at ${url}`);
 });
