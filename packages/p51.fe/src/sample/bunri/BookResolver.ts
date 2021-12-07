@@ -34,15 +34,17 @@ export const BookResolver = {
     books: () => books,
   },
   Mutation: {
-    addBook: (title:string, author:string) => addBook(title, author),
+    addBook: (root: any, args: any) => addBook(root, args),
   }
 };
 
-const addBook = (title: string, author: string) => {
-  // const { title, author } = args;
+const addBook = (root: any, args: any) => {
+  console.log(root);
+  const { title, author } = args;
+  console.log(title + author);
   const data = {
-    title,
-    author
+    title: title,
+    author: author
   };
   books.push(data);
   return data;
