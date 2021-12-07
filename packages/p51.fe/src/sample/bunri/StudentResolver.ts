@@ -7,9 +7,12 @@ export const StudentSchema = gql`
     name: String
     school: String
   }
-  type Query 
+  extend type Query 
   {
-    Students: [Student]
+    students: [Student]
+  }
+  extend type Mutation {
+    addStudent: (name:String!, school:String!) : Student!
   }
 `;
 
@@ -43,4 +46,4 @@ const addStudent = (args: any) => {
   };
   students.push(data);
   return data;
-}
+};

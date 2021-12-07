@@ -7,9 +7,12 @@ export const BookSchema = gql`
     title: String
     author: String
   }
-  type Query 
+  type Query
   {
     books: [Book]
+  }
+  type Mutation {
+    addBook(title: String!, author: String!): Book!
   }
 `;
 
@@ -31,12 +34,12 @@ export const BookResolver = {
     books: () => books,
   },
   Mutation: {
-    addBook: (args:any) => addBook(args),
+    addBook: (title:string, author:string) => addBook(title, author),
   }
 };
 
-const addBook = (args: any) => {
-  const { title, author } = args;
+const addBook = (title: string, author: string) => {
+  // const { title, author } = args;
   const data = {
     title,
     author
