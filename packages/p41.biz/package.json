@@ -1,0 +1,19 @@
+{
+  "name": "@sejong/biz",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+  },
+  "dependencies": {
+    "@sejong/common": "^1.0.0",
+    "@sejong/model": "^1.0.0",
+    "@sejong/dao": "^1.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  }
+}
