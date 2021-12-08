@@ -1,5 +1,5 @@
-// nodemon ./packages/p51.fe/src/sample/bunri/index.test.ts
-// cd packages/p51.fe/src/sample/bunri;nodemon index.test.ts
+// nodemon ./packages/p51.ctrl/src/sample/bunri/index.test.ts
+// cd packages/p51.ctrl/src/sample/bunri;nodemon index.test.ts
 
 import { ApolloServer } from "apollo-server";
 import { AppSchema } from "./AppSchema";

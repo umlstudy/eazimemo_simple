@@ -9,11 +9,11 @@
     "build.model": "cd packages/p21.model;tsc;cd ../..",
     "build.dao": "cd packages/p31.dao;tsc;cd ../..",
     "build.biz": "cd packages/p41.biz;tsc;cd ../..",
-    "build.fe": "cd packages/p51.fe;tsc;cd ../..",
+    "build.ctrl": "cd packages/p51.ctrl;tsc;cd ../..",
     "start.model": "nodemon packages/p21.model/dist/index.js",
-    "fedev": "nodemon 'packages/p51.fe/src/index.ts' --exec ts-node packages/p51.fe/src/index.ts -e ts,graphql",
-    "fedev3": "nodemon 'packages/p51.fe/src/server.ts' --exec 'ts-node' packages/p51.fe/src/server.ts -e ts,graphql",
-    "fedev2": "cd packages/p51.fe;nodemon packages/p51.fe/dist/index.js;cd ../.."
+    "ctrldev": "nodemon 'packages/p51.ctrl/src/index.ts' --exec ts-node packages/p51.ctrl/src/index.ts -e ts,graphql",
+    "ctrldev3": "nodemon 'packages/p51.ctrl/src/server.ts' --exec 'ts-node' packages/p51.ctrl/src/server.ts -e ts,graphql",
+    "ctrldev2": "cd packages/p51.ctrl;nodemon packages/p51.ctrl/dist/index.js;cd ../.."
   },
   "dependencies": {},
   "devDependencies": {

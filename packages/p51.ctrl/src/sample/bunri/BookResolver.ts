@@ -1,19 +1,18 @@
 
-// nodemon ./packages/p51.fe/src/index.test.ts
-// cd packages/p51.fe/src/;nodemon index.test.ts
-
-import { ApolloServer } from "apollo-server";
 import { gql } from "apollo-server-core";
 
 //1.
-const typeDefs = gql`
+export const BookSchema = gql`
   type Book {
     title: String
     author: String
   }
-  type Query 
+  type Query
   {
     books: [Book]
+  }
+  type Mutation {
+    addBook(title: String!, author: String!): Book!
   }
 `;
 
@@ -30,29 +29,23 @@ const books = [
 ];
 
 //3.
-const resolvers = {
+export const BookResolver = {
   Query: {
     books: () => books,
   },
   Mutation: {
-    addBook: (root:any, args:any) => addBook(args),
+    addBook: (root: any, args: any) => addBook(root, args),
   }
 };
 
-const addBook = (args: any) => {
+const addBook = (root: any, args: any) => {
+  console.log(root);
   const { title, author } = args;
+  console.log(title + author);
   const data = {
-    title,
-    author
+    title: title,
+    author: author
   };
   books.push(data);
   return data;
 }
-
-//4.
-const server = new ApolloServer({ typeDefs, resolvers });
-
-//5.
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});

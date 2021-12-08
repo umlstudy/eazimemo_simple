@@ -1,5 +1,5 @@
 
-// nodemon 'packages/p51.fe/src/index.ts
+// nodemon 'packages/p51.ctrl/src/index.ts
 
 import { ApolloServer } from "apollo-server";
 import { gql } from "apollo-server-core";
