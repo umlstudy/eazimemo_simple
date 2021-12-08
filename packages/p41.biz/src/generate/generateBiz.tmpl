@@ -1,7 +1,13 @@
-import { Abs{{modelName}}Dao } from "./Abs{{modelName}}Dao";
+import { AbsDao, {{pascalModelName}}Dao } from "@sejong/dao";
+import { {{pascalModelName}}Model } from "@sejong/model";
+import { Abs{{pascalModelName}}Biz } from "./Abs{{pascalModelName}}Biz";
 
 // 자동생성된 코드
-export class {{modelName}}Dao extends Abs{{modelName}}Dao {
+export class {{pascalModelName}}Biz extends Abs{{pascalModelName}}Biz {
 
-    public static readonly INS = new {{modelName}}Dao();
+    public static readonly INS = new {{pascalModelName}}Biz();
+
+    protected getAbsDao(): AbsDao<{{pascalModelName}}Model> {
+        return {{pascalModelName}}Dao.INS;
+    }
 }

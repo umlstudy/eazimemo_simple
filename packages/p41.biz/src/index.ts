@@ -5,6 +5,4 @@
 //
 // yarn install
 
-// export { AbsDao } from "./dao/AbsDao";
-// export { knexDefaultSetting } from "./KnexSetting";
-// export { MemoDao } from "./dao/MemoDao";
+export { MemoBiz } from "./biz/MemoBiz";
