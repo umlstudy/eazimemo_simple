@@ -1,6 +1,6 @@
 
 // 실행
-// npx ts-node packages/p51.fe/src/generate/generateSchemaAndResolver.ts
+// npx ts-node packages/p51.fe/src/generate/generateSchemaAndResolverUsingTbl.ts
 
 import sqlts from '@rmp135/sql-ts'
 import { SjLogUtil } from "@sejong/common";
@@ -10,15 +10,15 @@ import { knexDefaultSetting } from "@sejong/dao";
 
 async function main() {
     console.log("----------------");
-    const setting = { ...knexDefaultSetting
+    const dbSetting = { ...knexDefaultSetting
         , "interfaceNameFormat": "${table}Model"
         , "columnNameCasing": "camel"
         , "tableNameCasing": "pascal"
     };
     console.log("----------------");
-    const definitions = await sqlts.toObject(setting)
+    const definitions = await sqlts.toObject(dbSetting)
     console.log("----------------");
-    const tsString = sqlts.fromObject(definitions, setting)
+    const tsString = sqlts.fromObject(definitions, dbSetting)
 
     console.log("----------------");
     SjLogUtil.debug(tsString);

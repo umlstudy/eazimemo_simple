@@ -3,7 +3,7 @@ import { SjLogUtil } from '@sejong/common';
 import { knexDefaultSetting } from '../KnexSetting';
 
 // 실행
-// npx ts-node packages/p31.dao/src/generate/generateInterface.ts
+// npx ts-node packages/p31.dao/src/generate/generateModelInterface.ts
 
 // https://github.com/rmp135/sql-ts
 

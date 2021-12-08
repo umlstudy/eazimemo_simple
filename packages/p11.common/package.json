@@ -6,7 +6,10 @@
   "typings": "dist/index.d.ts",
   "license": "ISC",
   "devDependencies": {},
-  "dependencies": {},
+  "dependencies": {
+    "change-case": "^4.1.2",
+    "handlebars": "^4.7.7"
+  },
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch"

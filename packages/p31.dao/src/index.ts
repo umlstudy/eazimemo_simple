@@ -7,3 +7,4 @@
 
 export { AbsDao } from "./dao/AbsDao";
 export { knexDefaultSetting } from "./KnexSetting";
+export { MemoDao } from "./dao/MemoDao";

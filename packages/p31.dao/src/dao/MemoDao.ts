@@ -1,11 +1,6 @@
-import { MemoModel } from "@sejong/model";
-import { AbsIdBaseDao } from "./AbsIdBaseDao";
+import { AbsMemoDao } from "./AbsMemoDao";
 
-export class MemoDao extends AbsIdBaseDao<MemoModel> {
+export class MemoDao extends AbsMemoDao {
 
     public static readonly INS = new MemoDao();
-    
-    protected getTableName(): string {
-        return "Memo";
-    }
 }
