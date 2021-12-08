@@ -8,6 +8,7 @@
   "devDependencies": {
   },
   "dependencies": {
+    "knex": "^0.95.14",
     "@sejong/common": "^1.0.0",
     "@sejong/model": "^1.0.0",
     "@sejong/dao": "^1.0.0"

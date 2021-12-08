@@ -6,19 +6,20 @@ export abstract class AbsDao<M extends AbsModel> {
 
     protected abstract whereByPrimaryKey(table: any, model: M): Promise<any>;
 
-    public async insert(trx: Knex.Transaction<any, any[]>, model: M): Promise<Knex.QueryBuilder<any, number[]>> {
+    public async insert(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
         const tableName = this.getTableName();
-        return trx.table(tableName).insert(model);
+        return await trx.table(tableName).insert(model);
     }
 
-    public async update(trx: Knex.Transaction<any, any[]>, model: M): Promise<Knex.QueryBuilder<any, number[]>> {
+    public async update(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
         const tableName = this.getTableName();
-        return trx.table(tableName).update(model);
+        return await trx.table(tableName).update(model);
     }
 
-    public async delete(trx: Knex.Transaction<any, any[]>, model: M): Promise<Knex.QueryBuilder<any, number[]>> {
+    public async delete(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
         const tableName = this.getTableName();
-        return (await this.whereByPrimaryKey(trx.table(tableName), model)).del();
+        const table = await this.whereByPrimaryKey(trx.table(tableName), model);
+        return table.del();
     }
 
     public async selectFirst(knex: Knex): Promise<M | null> {
