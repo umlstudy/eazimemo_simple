@@ -1,4 +1,6 @@
 import { SjChangeCaseUtil, SjTemplateUtil } from '@sejong/common';
+import { PROJECT_HOME } from '@sejong/dao';
+
 import * as fs from 'fs';
 // import knex from 'knex';
 // import SchemaInspector from 'knex-schema-inspector';
@@ -10,7 +12,7 @@ import * as fs from 'fs';
 // https://github.com/rmp135/sql-ts
 
 async function main() {
-    const srcLoc = "D:\\gitrepos\\eazimemo_simple\\packages\\p31.dao\\src";
+    const srcLoc = `${PROJECT_HOME}\\packages\\p31.dao\\src`;
     const daoLoc = srcLoc + "\\dao";
 
     // const database = knex(knexDefaultSetting);

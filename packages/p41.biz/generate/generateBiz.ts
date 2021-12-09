@@ -1,11 +1,12 @@
 import { SjChangeCaseUtil, SjTemplateUtil } from '@sejong/common';
 import * as fs from 'fs';
+import { PROJECT_HOME } from '@sejong/dao';
 
 // 실행
 // ts-node packages/p41.biz/generate/generateBiz.ts
 
 async function main() {
-    const srcLoc = "D:\\gitrepos\\eazimemo_simple\\packages\\p41.biz\\src";
+    const srcLoc = `${PROJECT_HOME}\\packages\\p41.biz\\src`;
     const bizLoc = srcLoc + "\\biz";
 
     const absTmplLoc = srcLoc + "\\generate\\generateAbsBiz.tmpl";
