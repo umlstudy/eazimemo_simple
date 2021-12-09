@@ -1,51 +1,49 @@
 
+import { MemoBiz } from "@sejong/biz";
+import { knexConnection } from "@sejong/dao";
+import { MemoModel } from "@sejong/model";
 import { gql } from "apollo-server-core";
 
 //1.
-export const BookSchema = gql`
-  type Book {
-    title: String
-    author: String
+export const MemoSchema = gql`
+  type Memo {
+    id: Int!
+    message : String!
+    createdAt: Int!
+    updatedAt: Int!
   }
   type Query
   {
-    books: [Book]
+    memos: [Memo]
   }
   type Mutation {
-    addBook(title: String!, author: String!): Book!
+    addMemo(message: String!): Memo!
   }
 `;
 
 //2.
-const books = [
-  {
-    title: 'The Awakening',
-    author: 'Kate Chopin',
-  },
-  {
-    title: 'City of Glass',
-    author: 'Paul Auster',
-  },
-];
+const memos = [
+] as MemoModel[];
 
 //3.
-export const BookResolver = {
+export const MemoResolver = {
   Query: {
-    books: () => books,
+    memos: () => memos,
   },
   Mutation: {
-    addBook: (root: any, args: any) => addBook(root, args),
+    addMemo: async (root: any, args: any) => await addMemo(root, args),
   }
 };
 
-const addBook = (root: any, args: any) => {
+const addMemo = async (root: any, args: any) => {
   console.log(root);
-  const { title, author } = args;
-  console.log(title + author);
+  const { message } = args;
   const data = {
-    title: title,
-    author: author
-  };
-  books.push(data);
-  return data;
+    message: message,
+  } as MemoModel;
+  const result = await knexConnection.transaction(async trx => {
+    const memo = await MemoBiz.INS.addMemo(trx,data);
+    memos.push(memo);
+  });
+  return result;
 }

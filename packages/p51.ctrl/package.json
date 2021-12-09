@@ -9,6 +9,7 @@
     "@rmp135/sql-ts": "^1.12.1",
     "@sejong/common": "^1.0.0",
     "@sejong/model": "^1.0.0",
+    "@sejong/biz": "^1.0.0",
     "apollo-server": "^3.5.0",
     "apollo-server-express": "^3.5.0",
     "graphql": "^16.0.1",
