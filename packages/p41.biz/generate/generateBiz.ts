@@ -2,7 +2,7 @@ import { SjChangeCaseUtil, SjTemplateUtil } from '@sejong/common';
 import * as fs from 'fs';
 
 // 실행
-// npx ts-node packages/p41.biz/src/generate/generateBiz.ts
+// ts-node packages/p41.biz/generate/generateBiz.ts
 
 async function main() {
     const srcLoc = "D:\\gitrepos\\eazimemo_simple\\packages\\p41.biz\\src";

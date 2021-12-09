@@ -3,7 +3,7 @@
 import knex, { Knex } from 'knex';
 
 // 실행
-// npx ts-node packages/p31.dao/migrations/initial.ts
+// ts-node packages/p31.dao/migrations/initial.ts
 async function connect(connection: Record<string, string>) {
     const conn = {
         client: 'sqlite3',

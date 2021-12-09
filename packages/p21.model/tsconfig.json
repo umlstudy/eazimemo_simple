@@ -25,5 +25,10 @@
     "noUnusedParameters": true, //쓰지않는 파라미터 있으면 에러내기
     "noImplicitReturns": true, //함수에서 return 빼먹으면 에러내기 
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
-  }
+  },
+  "exclude": [
+    "dist",
+    "generate",
+    "node_modules"
+  ]
 }

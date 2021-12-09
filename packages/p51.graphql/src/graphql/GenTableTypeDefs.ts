@@ -19,6 +19,6 @@ export const GenTableTypeDefs = gql`
   type Mutation {
     addMemo(memo: MemoInput!): Memo!
     removeMemo(memo: MemoInput!): Memo!
-    updateMemo(memo: MemoInput4Update!): Memo!
+    updateMemo(memo: MemoInput!): Memo!
   }
 `;

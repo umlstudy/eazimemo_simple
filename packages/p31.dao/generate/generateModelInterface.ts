@@ -1,9 +1,9 @@
 import sqlts from '@rmp135/sql-ts'
 import { SjLogUtil } from '@sejong/common';
-import { knexDefaultSetting } from '../KnexSetting';
+import { knexDefaultSetting } from '../src/KnexSetting';
 
 // 실행
-// npx ts-node packages/p31.dao/src/generate/generateModelInterface.ts
+// ts-node packages/p31.dao/generate/generateModelInterface.ts
 
 // https://github.com/rmp135/sql-ts
 

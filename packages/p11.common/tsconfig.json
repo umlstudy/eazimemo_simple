@@ -13,5 +13,10 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "noImplicitAny": true,
     "strictNullChecks": true
-  }
+  },
+  "exclude": [
+    "dist",
+    "generate",
+    "node_modules"
+  ]
 }
