@@ -17,6 +17,12 @@ export class MemoBiz extends AbsMemoBiz {
         SjAssertUtil.mustNotNull(model, "model is null");
     }
 
+    public async getMemoByPrimaryKey(knex: Knex, model: MemoModel)
+        : Promise<MemoModel | null> {
+        const result = await this.selectById(knex, model);
+        return result;
+    }
+
     public async addMemo(trx: Knex.Transaction<any, any[]>, model: MemoModel)
         : Promise<MemoModel> {
         const id = await this.insert(trx, model);
@@ -24,9 +30,17 @@ export class MemoBiz extends AbsMemoBiz {
         return result!;
     }
 
-    public async getMemoByPrimaryKey(knex: Knex, model: MemoModel)
-        : Promise<MemoModel | null> {
-        const result = await this.selectById(knex, model);
-        return result;
+    public async removeMemo(trx: Knex.Transaction<any, any[]>, model: MemoModel)
+        : Promise<MemoModel> {
+        const result = await this.getMemoByPrimaryKey(trx, model);
+        await this.delete(trx, model);
+        return result!;
+    }
+
+    public async updateMemo(trx: Knex.Transaction<any, any[]>, model: MemoModel)
+        : Promise<MemoModel> {
+        await this.update(trx, model);
+        const result = await this.getMemoByPrimaryKey(trx, model);
+        return result!;
     }
 }

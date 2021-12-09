@@ -1,7 +1,8 @@
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { MemoResolver, MemoSchema } from './graphql/MemoResolver';
+import { GenMemoResolver } from './graphql/GenMemoResolver';
+import { GenTableTypeDefs } from './graphql/GenTableTypeDefs';
 
 export const AppSchema = makeExecutableSchema({
-    typeDefs: [MemoSchema],
-    resolvers: [MemoResolver],
+    typeDefs: [GenTableTypeDefs],
+    resolvers: [GenMemoResolver],
 });
