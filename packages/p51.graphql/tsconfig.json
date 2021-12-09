@@ -13,6 +13,6 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "exclude": [ "src/sample/imsi", "dist",
-    "generate", "node_modules"
+    "src.generate", "node_modules"
   ]
 }

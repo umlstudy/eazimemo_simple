@@ -14,8 +14,8 @@
   },
   "exclude": [
     "dist",
-    "generate",
+    "src.generate",
     "node_modules",
-    "migration"
+    "src.migration"
   ]
 }

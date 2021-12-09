@@ -1,0 +1,53 @@
+
+import { {{pascalTableName}}Biz } from "@sejong/biz";
+import { knexConnection } from "@sejong/dao";
+
+// 자동 생성된 코드
+
+// https://www.tutorialspoint.com/graphql/graphql_resolver.htm
+export const Gen{{pascalTableName}}Resolver = {
+  Query: {
+    get{{pascalTableName}}ByPrimaryKey: async (root: any, args: any) => get{{pascalTableName}}ByPrimaryKey(root, args),
+  },
+  Mutation: {
+    add{{pascalTableName}}: async (root: any, args: any) => await add{{pascalTableName}}(root, args),
+    remove{{pascalTableName}}: async (root: any, args: any) => await remove{{pascalTableName}}(root, args),
+    update{{pascalTableName}}: async (root: any, args: any) => await update{{pascalTableName}}(root, args),
+  }
+};
+
+const get{{pascalTableName}}ByPrimaryKey = async (root: any, args: any) => {
+  console.log(root);
+  const { {{camelTableName}} } = args;
+  return await {{pascalTableName}}Biz.INS.get{{pascalTableName}}ByPrimaryKey(knexConnection, {{camelTableName}});
+}
+
+const add{{pascalTableName}} = async (root: any, args: any) => {
+  console.log(root);
+  const { {{camelTableName}} } = args;
+  const result = await knexConnection.transaction(async trx => {
+    const {{camelTableName}}Added = await {{pascalTableName}}Biz.INS.add{{pascalTableName}}(trx, {{camelTableName}});
+    return {{camelTableName}}Added;
+  });
+  return result;
+}
+
+const remove{{pascalTableName}} = async (root: any, args: any) => {
+  console.log(root);
+  const { {{camelTableName}} } = args;
+  const result = await knexConnection.transaction(async trx => {
+    const {{camelTableName}}Removed = await {{pascalTableName}}Biz.INS.remove{{pascalTableName}}(trx, {{camelTableName}});
+    return {{camelTableName}}Removed;
+  });
+  return result;
+}
+
+const update{{pascalTableName}} = async (root: any, args: any) => {
+  console.log(root);
+  const { {{camelTableName}} } = args;
+  const result = await knexConnection.transaction(async trx => {
+    const {{camelTableName}}Updated = await {{pascalTableName}}Biz.INS.update{{pascalTableName}}(trx, {{camelTableName}});
+    return {{camelTableName}}Updated;
+  });
+  return result;
+}
