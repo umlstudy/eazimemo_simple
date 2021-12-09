@@ -2,6 +2,7 @@
 import { MemoBiz } from "@sejong/biz";
 import { knexConnection } from "@sejong/dao";
 
+// https://www.tutorialspoint.com/graphql/graphql_resolver.htm
 export const GenMemoResolver = {
   Query: {
     getMemoByPrimaryKey: async (root: any, args: any) => getMemoByPrimaryKey(root, args),
