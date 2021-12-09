@@ -1,5 +1,5 @@
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { MemoResolver, MemoSchema } from './ctrl/resolvers/MemoResolver';
+import { MemoResolver, MemoSchema } from './graphql/MemoResolver';
 
 export const AppSchema = makeExecutableSchema({
     typeDefs: [MemoSchema],

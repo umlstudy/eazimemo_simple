@@ -22,10 +22,6 @@ export const MemoSchema = gql`
 `;
 
 //2.
-const memos = [
-] as MemoModel[];
-
-//3.
 export const MemoResolver = {
   Query: {
     getMemoByPrimaryKey: async (root: any, args: any) => getMemoByPrimaryKey(root, args),
@@ -51,8 +47,7 @@ const addMemo = async (root: any, args: any) => {
     message: message,
   } as MemoModel;
   const result = await knexConnection.transaction(async trx => {
-    const memo = await MemoBiz.INS.addMemo(trx,data);
-    memos.push(memo);
+    const memo = await MemoBiz.INS.addMemo(trx, data);
     return memo;
   });
   return result;

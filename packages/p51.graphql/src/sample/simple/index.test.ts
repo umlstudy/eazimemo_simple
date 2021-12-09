@@ -1,6 +1,5 @@
 
-// nodemon ./packages/p51.ctrl/src/index.test.ts
-// cd packages/p51.ctrl/src/;nodemon index.test.ts
+// nodemon ./packages/p51.graphql/src/sample/simple/index.test.ts
 
 import { ApolloServer } from "apollo-server";
 import { gql } from "apollo-server-core";

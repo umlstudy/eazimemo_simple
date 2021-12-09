@@ -1,6 +1,6 @@
 
-// nodemon 'packages/p51.ctrl/src/index.ts
-// npx ts-node packages/p51.ctrl/src/index.ts
+// npx ts-node packages/p51.graphql/src/index.ts
+// nodemon 'packages/p51.graphql/src/index.ts
 
 
 import { ApolloServer } from "apollo-server";
