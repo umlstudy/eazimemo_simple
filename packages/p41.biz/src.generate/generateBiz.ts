@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { PROJECT_HOME } from '@sejong/dao';
 
 // 실행
-// ts-node packages/p41.biz/generate/generateBiz.ts
+// ts-node packages/p41.biz/src.generate/generateBiz.ts
 
 async function main() {
     const srcLoc = `${PROJECT_HOME}\\packages\\p41.biz\\src`;

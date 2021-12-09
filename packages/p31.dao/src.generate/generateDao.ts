@@ -7,7 +7,7 @@ import * as fs from 'fs';
 // import { knexDefaultSetting } from '../KnexSetting';
 
 // 실행
-// ts-node packages/p31.dao/generate/generateDao.ts
+// ts-node packages/p31.dao/src.generate/generateDao.ts
 
 // https://github.com/rmp135/sql-ts
 

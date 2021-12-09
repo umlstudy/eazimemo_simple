@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { PROJECT_HOME } from '@sejong/dao';
 
 // 실행
-// ts-node packages/p51.graphql/generate/generateTypeDefsUsingTbl.ts
+// ts-node packages/p51.graphql/src.generate/generateTypeDefsUsingTbl.ts
 
 async function main() {
     const srcLoc = `${PROJECT_HOME}\\packages\\p51.graphql\\src`;

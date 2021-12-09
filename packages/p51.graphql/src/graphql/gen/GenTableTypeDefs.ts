@@ -2,6 +2,9 @@
 import { gql } from "apollo-server-core";
 
 export const GenTableTypeDefs = gql`
+  #
+  # Memo
+  #
   type Memo {
     id: Int
     message : String

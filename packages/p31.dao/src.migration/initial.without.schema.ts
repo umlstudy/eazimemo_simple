@@ -5,7 +5,7 @@ import { Knex } from 'knex';
 import { knexConnection } from '../src/KnexConfig';
 
 // 실행
-// ts-node packages/p31.dao/migration/initial.without.schema.ts
+// ts-node packages/p31.dao/src.migration/initial.without.schema.ts
 
 // https://dev.to/asteinarson/typescript-node-js-importing-knex-into-es6-module-1poc
 // https://www.daleseo.com/js-dotenv/

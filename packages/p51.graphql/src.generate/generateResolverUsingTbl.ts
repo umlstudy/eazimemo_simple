@@ -1,6 +1,6 @@
 
 // 실행
-// npx ts-node packages/p51.fe/src/generate/generateSchemaAndResolverUsingTbl.ts
+// npx ts-node packages/p51.fe/src.generate/generateSchemaAndResolverUsingTbl.ts
 
 import sqlts from '@rmp135/sql-ts'
 import { SjLogUtil } from "@sejong/common";
