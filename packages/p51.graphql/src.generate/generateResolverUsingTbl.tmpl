@@ -1,53 +1,53 @@
 
-import { {{pascalTableName}}Biz } from "@sejong/biz";
+import { {{pascalModelName}}Biz } from "@sejong/biz";
 import { knexConnection } from "@sejong/dao";
 
 // 자동 생성된 코드
 
 // https://www.tutorialspoint.com/graphql/graphql_resolver.htm
-export const Gen{{pascalTableName}}Resolver = {
+export const Gen{{pascalModelName}}Resolver = {
   Query: {
-    get{{pascalTableName}}ByPrimaryKey: async (root: any, args: any) => get{{pascalTableName}}ByPrimaryKey(root, args),
+    get{{pascalModelName}}ByPrimaryKey: async (root: any, args: any) => get{{pascalModelName}}ByPrimaryKey(root, args),
   },
   Mutation: {
-    add{{pascalTableName}}: async (root: any, args: any) => await add{{pascalTableName}}(root, args),
-    remove{{pascalTableName}}: async (root: any, args: any) => await remove{{pascalTableName}}(root, args),
-    update{{pascalTableName}}: async (root: any, args: any) => await update{{pascalTableName}}(root, args),
+    add{{pascalModelName}}: async (root: any, args: any) => await add{{pascalModelName}}(root, args),
+    remove{{pascalModelName}}: async (root: any, args: any) => await remove{{pascalModelName}}(root, args),
+    update{{pascalModelName}}: async (root: any, args: any) => await update{{pascalModelName}}(root, args),
   }
 };
 
-const get{{pascalTableName}}ByPrimaryKey = async (root: any, args: any) => {
+const get{{pascalModelName}}ByPrimaryKey = async (root: any, args: any) => {
   console.log(root);
-  const { {{camelTableName}} } = args;
-  return await {{pascalTableName}}Biz.INS.get{{pascalTableName}}ByPrimaryKey(knexConnection, {{camelTableName}});
+  const { {{camelModelName}} } = args;
+  return await {{pascalModelName}}Biz.INS.get{{pascalModelName}}ByPrimaryKey(knexConnection, {{camelModelName}});
 }
 
-const add{{pascalTableName}} = async (root: any, args: any) => {
+const add{{pascalModelName}} = async (root: any, args: any) => {
   console.log(root);
-  const { {{camelTableName}} } = args;
+  const { {{camelModelName}} } = args;
   const result = await knexConnection.transaction(async trx => {
-    const {{camelTableName}}Added = await {{pascalTableName}}Biz.INS.add{{pascalTableName}}(trx, {{camelTableName}});
-    return {{camelTableName}}Added;
+    const {{camelModelName}}Added = await {{pascalModelName}}Biz.INS.add{{pascalModelName}}(trx, {{camelModelName}});
+    return {{camelModelName}}Added;
   });
   return result;
 }
 
-const remove{{pascalTableName}} = async (root: any, args: any) => {
+const remove{{pascalModelName}} = async (root: any, args: any) => {
   console.log(root);
-  const { {{camelTableName}} } = args;
+  const { {{camelModelName}} } = args;
   const result = await knexConnection.transaction(async trx => {
-    const {{camelTableName}}Removed = await {{pascalTableName}}Biz.INS.remove{{pascalTableName}}(trx, {{camelTableName}});
-    return {{camelTableName}}Removed;
+    const {{camelModelName}}Removed = await {{pascalModelName}}Biz.INS.remove{{pascalModelName}}(trx, {{camelModelName}});
+    return {{camelModelName}}Removed;
   });
   return result;
 }
 
-const update{{pascalTableName}} = async (root: any, args: any) => {
+const update{{pascalModelName}} = async (root: any, args: any) => {
   console.log(root);
-  const { {{camelTableName}} } = args;
+  const { {{camelModelName}} } = args;
   const result = await knexConnection.transaction(async trx => {
-    const {{camelTableName}}Updated = await {{pascalTableName}}Biz.INS.update{{pascalTableName}}(trx, {{camelTableName}});
-    return {{camelTableName}}Updated;
+    const {{camelModelName}}Updated = await {{pascalModelName}}Biz.INS.update{{pascalModelName}}(trx, {{camelModelName}});
+    return {{camelModelName}}Updated;
   });
   return result;
 }

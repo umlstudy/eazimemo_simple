@@ -2,6 +2,8 @@
 import { MemoBiz } from "@sejong/biz";
 import { knexConnection } from "@sejong/dao";
 
+// 자동 생성된 코드
+
 // https://www.tutorialspoint.com/graphql/graphql_resolver.htm
 export const GenMemoResolver = {
   Query: {
