@@ -1,3 +1,4 @@
+import { SjAssertUtil } from "@sejong/common";
 import { AbsDao, MemoDao } from "@sejong/dao";
 import { MemoModel } from "@sejong/model";
 import { Knex } from "knex";
@@ -12,9 +13,20 @@ export class MemoBiz extends AbsMemoBiz {
         return MemoDao.INS;
     }
 
+    protected validate4Insert(model: MemoModel): void {
+        SjAssertUtil.mustNotNull(model, "model is null");
+    }
+
     public async addMemo(trx: Knex.Transaction<any, any[]>, model: MemoModel)
         : Promise<MemoModel> {
-        const val = await this.insert(trx, model);
-        return {id:val} as MemoModel;
+        const id = await this.insert(trx, model);
+        const result = await this.getMemoByPrimaryKey(trx, { id: id } as MemoModel);
+        return result!;
+    }
+
+    public async getMemoByPrimaryKey(knex: Knex, model: MemoModel)
+        : Promise<MemoModel | null> {
+        const result = await this.selectById(knex, model);
+        return result;
     }
 }

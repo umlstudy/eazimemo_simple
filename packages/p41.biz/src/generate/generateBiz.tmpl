@@ -10,4 +10,8 @@ export class {{pascalModelName}}Biz extends Abs{{pascalModelName}}Biz {
     protected getAbsDao(): AbsDao<{{pascalModelName}}Model> {
         return {{pascalModelName}}Dao.INS;
     }
+
+    protected validate4Insert(model: {{pascalModelName}}Model): void {
+        SjAssertUtil.mustNotNull(model, "model is null");
+    }
 }

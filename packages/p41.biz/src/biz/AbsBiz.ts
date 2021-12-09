@@ -14,7 +14,10 @@ export abstract class AbsBiz<M extends AbsModel> {
         return this.getAbsDao().selectFirst(knex);
     }
 
+    protected abstract validate4Insert(model: M):void;
+
     public async insert(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
+        this.validate4Insert(model);
         return await this.getAbsDao().insert(trx, model);
     }
 

@@ -14,7 +14,7 @@ export const MemoSchema = gql`
   }
   type Query
   {
-    memos: [Memo]
+    getMemoByPrimaryKey(id: Int!): Memo
   }
   type Mutation {
     addMemo(message: String!): Memo!
@@ -28,12 +28,21 @@ const memos = [
 //3.
 export const MemoResolver = {
   Query: {
-    memos: () => memos,
+    getMemoByPrimaryKey: async (root: any, args: any) => getMemoByPrimaryKey(root, args),
   },
   Mutation: {
     addMemo: async (root: any, args: any) => await addMemo(root, args),
   }
 };
+
+const getMemoByPrimaryKey = async (root: any, args: any) => {
+  console.log(root);
+  const { id } = args;
+  const data = {
+    id: id,
+  } as MemoModel;
+  return await MemoBiz.INS.getMemoByPrimaryKey(knexConnection, data);
+}
 
 const addMemo = async (root: any, args: any) => {
   console.log(root);
@@ -44,6 +53,7 @@ const addMemo = async (root: any, args: any) => {
   const result = await knexConnection.transaction(async trx => {
     const memo = await MemoBiz.INS.addMemo(trx,data);
     memos.push(memo);
+    return memo;
   });
   return result;
 }
