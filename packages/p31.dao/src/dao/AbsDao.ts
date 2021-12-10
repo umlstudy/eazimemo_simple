@@ -1,5 +1,26 @@
 import { AbsModel } from "@sejong/model";
 import { Knex } from "knex";
+
+export type WhereFunc<M extends AbsModel> = 
+    (queryBuilder: Knex.QueryBuilder, model: M)
+    => Knex.QueryBuilder ;
+
+const createAtFromToWhereFunc: WhereFunc < AbsModel> = (queryBuilder: Knex.QueryBuilder, model: AbsModel)
+    : Knex.QueryBuilder => {
+
+    const fromTo = model.createdAtFromToInfo;
+    if (fromTo) {
+        if (fromTo.from) {
+            queryBuilder.where('createdAt', '>=', fromTo.from);
+        }
+        if (fromTo.to) {
+            queryBuilder.where('createdAt', '<=', fromTo.to);
+        }
+    }
+
+    return queryBuilder;
+};
+
 export abstract class AbsDao<M extends AbsModel> {
 
     protected abstract getTableName(): string;
@@ -39,7 +60,7 @@ export abstract class AbsDao<M extends AbsModel> {
     }
 
     protected async paging(queryBuilder: Knex.QueryBuilder, model: M)
-    : Promise<Knex.QueryBuilder|null> {
+    : Promise<Knex.QueryBuilder> {
         const page = model.pageInfo;
         if (page) {
             const totalCountObject = await queryBuilder.clone()
@@ -51,7 +72,7 @@ export abstract class AbsDao<M extends AbsModel> {
                 const offsetQueryBuilder = clonedQueryBuilder.offset(offset);
                 return offsetQueryBuilder.limit(page.rowsPerPage);
             } else {
-                return null;
+                return queryBuilder.where('1', '=', '2');
             }
         } else {
             return queryBuilder;
@@ -59,33 +80,25 @@ export abstract class AbsDao<M extends AbsModel> {
     }
 
     public async selectByDefaultFilter(knex: Knex, model: M): Promise<M[]> {
-        if (!model.createdAtFromToInfo && !model.pageInfo ) {
+        if (!model.createdAtFromToInfo && !model.pageInfo) {
             throw 'fromTo and page filter null';
         }
 
+        return this.selectByFilters(knex, model, createAtFromToWhereFunc);
+    }
+
+    public async selectByFilters(knex: Knex, model: M, ...whereFunc:WhereFunc<M>[]): Promise<M[]> {
+
         const tableName = this.getTableName();
-        const queryBuilder = knex.select().from<M>(tableName);
-
-        const fromTo = model.createdAtFromToInfo;
-        if ( fromTo ) {
-            if ( fromTo.from ) {
-                queryBuilder.where('createdAt', '>=', fromTo.from);
-            }
-            if (fromTo.to) {
-                queryBuilder.where('createdAt', '<=', fromTo.to);
+        let queryBuilderTmp = knex.select().from<M>(tableName);
+        if (whereFunc && whereFunc.length > 0 ) {
+            for( let i=0;i<whereFunc.length;i++ ) {
+                queryBuilderTmp = whereFunc[i](queryBuilderTmp, model);
             }
         }
+        const queryBuilder = queryBuilderTmp;
 
-        if (model.pageInfo ) {
-            const result = await this.paging(queryBuilder, model);
-            if (result === null ) {
-                return [];
-            } else {
-                return result;
-            }
-        } else {
-            const selected = await queryBuilder.select();
-            return selected as M[];
-        }
+        const result = await this.paging(queryBuilder, model);
+        return result;
     }
 }
