@@ -16,8 +16,14 @@ async function main() {
     const tmplString = fs.readFileSync(tmplLoc, 'utf8');
 
     const exportClasses = [] as string[];
-    {
-        const table = "memo";
+    // 테이블 변경 혹은 추가시 함께 변경.
+    const tables = [] as string[];
+    tables.push("memo");
+    tables.push("user");
+
+    for (let i = 0; i < tables.length; i++) {
+        const table = tables[i];
+        
         const pascalTableName = SjChangeCaseUtil.convertCase(table, 'pascal');
         const camelTableName = SjChangeCaseUtil.convertCase(table, 'camel');
 

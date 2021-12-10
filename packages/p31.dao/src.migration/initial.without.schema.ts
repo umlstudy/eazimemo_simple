@@ -19,23 +19,41 @@ class DbInitializer {
 
     static async createMemoTable(knex: Knex):Promise<void> {
 
-        const tableName = 'memo';
-        const exists = await knex.schema.hasTable(tableName);
-
-        // 1 테이블생성
-        if (!exists) {
-            await knex.schema.createTable(tableName, table => {
-                table.increments()
-                table.string("message")
-                table.timestamp("created_at").defaultTo(knex.fn.now());
-                table.timestamp("updated_at").defaultTo(knex.fn.now());
-            });
+        // memo
+        {
+            const tableName = 'memo';
+            const exists = await knex.schema.hasTable(tableName);
+    
+            // 1 테이블생성
+            if (!exists) {
+                await knex.schema.createTable(tableName, table => {
+                    table.increments()
+                    table.string("message")
+                    table.timestamp("created_at").defaultTo(knex.fn.now());
+                    table.timestamp("updated_at").defaultTo(knex.fn.now());
+                });
+            }
+            // 2 기본값 입력
+            // await knex(tableName).insert([
+            //     { message: "message" }
+            // ])
         }
 
-        // 2 기본값 입력
-        // await knex(tableName).insert([
-        //     { message: "message" }
-        // ])
+        // user
+        {
+            const tableName = 'user';
+            const exists = await knex.schema.hasTable(tableName);
+
+            // 1 테이블생성
+            if (!exists) {
+                await knex.schema.createTable(tableName, table => {
+                    table.increments()
+                    table.string("email")
+                    table.timestamp("created_at").defaultTo(knex.fn.now());
+                    table.timestamp("updated_at").defaultTo(knex.fn.now());
+                });
+            }
+        }
     }
 }
 

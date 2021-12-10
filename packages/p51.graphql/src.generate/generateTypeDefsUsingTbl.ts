@@ -15,12 +15,17 @@ async function main() {
 
     const exportClasses = [] as string[];
     const database = knexConnection;
-    {
-        const data = {} as any;
-        const tables = [] as any[];
-        data['tables'] = tables;
+    // 테이블 변경 혹은 추가시 함께 변경.
+    const tables = [] as string[];
+    tables.push("memo");
+    tables.push("user");
+    
+    for (let i=0;i<tables.length;i++) {
+        const table = tables[i];
 
-        const table = "memo";
+        const data = {} as any;
+        const tablesInData = [] as any[];
+        data['tables'] = [] as any[];
 
         const columnsTmp = await SjKnexSchemaUtil.extractColumns4Gql(database, table);
         const columns = [] as ColumnInfo[];
@@ -36,7 +41,7 @@ async function main() {
 
         const pascalTableName = SjChangeCaseUtil.convertCase(table, 'pascal');
         const camelTableName = SjChangeCaseUtil.convertCase(table, 'camel');
-        tables.push({
+        tablesInData.push({
             pascalTableName: pascalTableName,
             camelTableName: camelTableName,
             columns: columns
