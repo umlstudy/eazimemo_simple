@@ -26,4 +26,28 @@ export const GenTableTypeDefs = gql`
     removeMemo(memo: MemoInput!): Memo!
     updateMemo(memo: MemoInput!): Memo!
   }
+  #
+  # User
+  #
+  type User {
+    id: Int
+    email: String
+    createdAt: Int
+    updatedAt: Int
+  }
+  input UserInput {
+    id: Int
+    email: String
+    createdAt: Int
+    updatedAt: Int
+  }
+  type Query
+  {
+    getUserByPrimaryKey(user: UserInput!): User
+  }
+  type Mutation {
+    addUser(user: UserInput!): User!
+    removeUser(user: UserInput!): User!
+    updateUser(user: UserInput!): User!
+  }
 `;

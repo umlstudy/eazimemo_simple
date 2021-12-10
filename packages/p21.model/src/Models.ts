@@ -15,3 +15,10 @@ export interface TestTableModel extends AbsIdBaseModel {
     'name'?: string | null;
     'description'?: string | null;
 }
+
+export interface UserModel {
+    'id': number;
+    'email'?: string | null;
+    'createdAt'?: Date | null;
+    'updatedAt'?: Date | null;
+}

@@ -6,13 +6,13 @@ import { PROJECT_HOME } from '@sejong/dao';
 // ts-node packages/p41.biz/src.generate/generateBiz.ts
 
 async function main() {
-    const srcLoc = `${PROJECT_HOME}\\packages\\p41.biz\\src`;
-    const bizLoc = srcLoc + "\\biz";
+    const srcLoc = `${PROJECT_HOME}\\packages\\p41.biz`;
+    const bizLoc = srcLoc + "\\src\\biz";
 
-    const absTmplLoc = srcLoc + "\\generate\\generateAbsBiz.tmpl";
+    const absTmplLoc = srcLoc + "\\src.generate\\generateAbsBiz.tmpl";
     const absTmplString = fs.readFileSync(absTmplLoc, 'utf8');
 
-    const tmplLoc = srcLoc + "\\generate\\generateBiz.tmpl";
+    const tmplLoc = srcLoc + "\\src.generate\\generateBiz.tmpl";
     const tmplString = fs.readFileSync(tmplLoc, 'utf8');
 
     const exportClasses = [] as string[];

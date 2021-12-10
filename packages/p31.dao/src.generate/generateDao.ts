@@ -1,10 +1,6 @@
 import { SjChangeCaseUtil, SjTemplateUtil } from '@sejong/common';
 import { PROJECT_HOME } from '@sejong/dao';
-
 import * as fs from 'fs';
-// import knex from 'knex';
-// import SchemaInspector from 'knex-schema-inspector';
-// import { knexDefaultSetting } from '../KnexSetting';
 
 // 실행
 // ts-node packages/p31.dao/src.generate/generateDao.ts

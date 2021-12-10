@@ -13,8 +13,13 @@ async function main() {
     const tmplLoc = srcLoc + "\\src.generate\\generateTypeDefsUsingTbl.tmpl";
     const tmplString = fs.readFileSync(tmplLoc, 'utf8');
 
-    const exportClasses = [] as string[];
     const database = knexConnection;
+    const data = {} as any;
+    const tablesInData = [] as any[];
+    data['tables'] = tablesInData;
+
+    const exportClasses = [] as string[];
+
     // 테이블 변경 혹은 추가시 함께 변경.
     const tables = [] as string[];
     tables.push("memo");
@@ -22,10 +27,6 @@ async function main() {
     
     for (let i=0;i<tables.length;i++) {
         const table = tables[i];
-
-        const data = {} as any;
-        const tablesInData = [] as any[];
-        data['tables'] = [] as any[];
 
         const columnsTmp = await SjKnexSchemaUtil.extractColumns4Gql(database, table);
         const columns = [] as ColumnInfo[];
@@ -47,12 +48,12 @@ async function main() {
             columns: columns
         });
 
-        const converted = SjTemplateUtil.convert(tmplString, data);
-        fs.writeFileSync(targetLoc + "//GenTableTypeDefs.ts", converted);
-
         const exportStr = `export { ${pascalTableName}Biz } from \"./biz/${pascalTableName}Biz\";`;
         exportClasses.push(exportStr);
     }
+
+    const converted = SjTemplateUtil.convert(tmplString, data);
+    fs.writeFileSync(targetLoc + "//GenTableTypeDefs.ts", converted);
 
     exportClasses.forEach((s) => console.log(s));
 }

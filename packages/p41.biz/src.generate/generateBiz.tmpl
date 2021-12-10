@@ -1,5 +1,7 @@
+import { SjAssertUtil } from "@sejong/common";
 import { AbsDao, {{pascalModelName}}Dao } from "@sejong/dao";
 import { {{pascalModelName}}Model } from "@sejong/model";
+import { Knex } from "knex";
 import { Abs{{pascalModelName}}Biz } from "./Abs{{pascalModelName}}Biz";
 
 // 자동생성된 코드
@@ -13,5 +15,32 @@ export class {{pascalModelName}}Biz extends Abs{{pascalModelName}}Biz {
 
     protected validate4Insert(model: {{pascalModelName}}Model): void {
         SjAssertUtil.mustNotNull(model, "model is null");
+    }
+
+    public async get{{pascalModelName}}ByPrimaryKey(knex: Knex, model: {{pascalModelName}}Model)
+        : Promise<{{pascalModelName}}Model | null> {
+        const result = await this.selectById(knex, model);
+        return result;
+    }
+
+    public async add{{pascalModelName}}(trx: Knex.Transaction<any, any[]>, model: {{pascalModelName}}Model)
+        : Promise<{{pascalModelName}}Model> {
+        const id = await this.insert(trx, model);
+        const result = await this.get{{pascalModelName}}ByPrimaryKey(trx, { id: id } as {{pascalModelName}}Model);
+        return result!;
+    }
+
+    public async remove{{pascalModelName}}(trx: Knex.Transaction<any, any[]>, model: {{pascalModelName}}Model)
+        : Promise<{{pascalModelName}}Model> {
+        const result = await this.get{{pascalModelName}}ByPrimaryKey(trx, model);
+        await this.delete(trx, model);
+        return result!;
+    }
+
+    public async update{{pascalModelName}}(trx: Knex.Transaction<any, any[]>, model: {{pascalModelName}}Model)
+        : Promise<{{pascalModelName}}Model> {
+        await this.update(trx, model);
+        const result = await this.get{{pascalModelName}}ByPrimaryKey(trx, model);
+        return result!;
     }
 }

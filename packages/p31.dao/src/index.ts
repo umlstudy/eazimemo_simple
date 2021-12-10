@@ -8,9 +8,11 @@
 export { AbsDao } from "./dao/AbsDao";
 export { AbsIdBaseDao } from "./dao/AbsIdBaseDao";
 export { knexConnection } from "./KnexConfig";
-export { MemoDao } from "./dao/MemoDao";
 export { SjKnexSchemaUtil } from "./util/knex/SjKnexSchemaUtil";
 
-export const PROJECT_HOME = "D:\\gitrepos\\eazimemo_simple";
+// 테이블이 추가되면 계속 추가됨
+export { MemoDao } from "./dao/MemoDao";
+export { UserDao } from "./dao/UserDao";
 
+export const PROJECT_HOME = "D:\\gitrepos\\eazimemo_simple";
 
