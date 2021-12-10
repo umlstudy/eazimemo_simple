@@ -1,5 +1,7 @@
-import { FilterInfo } from "./FilterInfo";
+import { FromToInfo } from "./FromToInfo";
+import { PageInfo } from "./PageInfo";
 
 export interface AbsModel {
-    filterInfo:FilterInfo;
+    createdAtFromToInfo: FromToInfo;
+    pageInfo: PageInfo;
 }
