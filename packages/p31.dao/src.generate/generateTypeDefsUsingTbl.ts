@@ -7,10 +7,10 @@ import * as fs from 'fs';
 // ts-node packages/p51.graphql/src.generate/generateTypeDefsUsingTbl.ts
 
 async function main() {
-    const srcLoc = `${PROJECT_HOME}\\packages\\p31.dao`;
-    const targetLoc = srcLoc + "\\..\\p21.model\\src";
+    const srcLoc = `${PROJECT_HOME}\\packages\\p51.graphql`;
+    const targetLoc = srcLoc + "\\src\\graphql\\gen";
 
-    const tmplLoc = srcLoc + "\\src.generate\\generateModelInterface.tmpl";
+    const tmplLoc = srcLoc + "\\src.generate\\generateTypeDefsUsingTbl.tmpl";
     const tmplString = fs.readFileSync(tmplLoc, 'utf8');
 
     const database = knexConnection;
@@ -24,14 +24,14 @@ async function main() {
     const tables = [] as string[];
     tables.push("memo");
     tables.push("user");
-
-    for (let i = 0; i < tables.length; i++) {
+    
+    for (let i=0;i<tables.length;i++) {
         const table = tables[i];
 
         const columnsTmp = await SjKnexSchemaUtil.extractColumns4Gql(database, table);
         const columns = [] as ColumnInfo[];
         for (const key in columnsTmp) {
-            const typeStr = columnsTmp[key];
+            const typeStr = columnsTmp[key]; 
             const camelColumnName = SjChangeCaseUtil.convertCase(key, 'camel');
             const col = {
                 columnName: camelColumnName,
@@ -48,14 +48,14 @@ async function main() {
             columns: columns
         });
 
-        const exportStr = `${pascalTableName}`;
+        const exportStr = `export { ${pascalTableName}Biz } from \"./biz/${pascalTableName}Biz\";`;
         exportClasses.push(exportStr);
     }
 
     const converted = SjTemplateUtil.convert(tmplString, data);
     fs.writeFileSync(targetLoc + "//GenTableTypeDefs.ts", converted);
 
-    console.log(exportClasses.join(','));
+    exportClasses.forEach((s) => console.log(s));
 }
 
 main();
