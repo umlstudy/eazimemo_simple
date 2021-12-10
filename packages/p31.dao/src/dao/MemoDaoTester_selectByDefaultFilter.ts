@@ -7,8 +7,8 @@ async function main() {
   const memo = {} as MemoModel;
   memo.filterInfo={
     fromToInfo:{
-      from:new Date(),
-      to: new Date()
+      from: "2021-01-01",
+      to: "2022-12-01"
     },
     pageInfo:{
       curPagePos:0,

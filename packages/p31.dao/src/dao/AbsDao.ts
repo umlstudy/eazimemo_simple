@@ -5,6 +5,8 @@ export abstract class AbsDao<M extends AbsModel> {
 
     protected abstract getTableName(): string;
 
+    protected abstract getCountColumn(): string;
+
     protected abstract whereByPrimaryKey(table: any, model: M): Promise<any>;
 
     public async insert(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
@@ -50,16 +52,19 @@ export abstract class AbsDao<M extends AbsModel> {
         const fromTo = filter.fromToInfo;
         if ( fromTo ) {
             if ( fromTo.from ) {
-                queryBuilder.where('createAt', '>=', fromTo.from);
+                queryBuilder.where('createdAt', '>=', fromTo.from);
             }
             if (fromTo.to) {
-                queryBuilder.where('createAt', '<=', fromTo.to);
+                queryBuilder.where('createdAt', '<=', fromTo.to);
             }
         }
 
         const page = filter.pageInfo;
         if (page) {
-            const totalCount = await queryBuilder.clone().count() as number;
+            const totalCountObject = await queryBuilder.clone()
+                .count({cnt:this.getCountColumn()}) as any;
+            const totalCount = totalCountObject[0].cnt;
+            console.log('totalCount => ' + totalCount);
             const offset = page.curPagePos*page.rowsPerPage;
             if ( totalCount > offset ) {
                 const data = await queryBuilder.clone().offset(offset)

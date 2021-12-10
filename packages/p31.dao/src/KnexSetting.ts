@@ -11,7 +11,7 @@ const knexSetting = {
         ,
         wrapIdentifier: (value: string, origImpl: any, queryContext: any) => {
             console.log(queryContext);
-            return origImpl(SjChangeCaseUtil.convertCase(value, 'pascal'));
+            return origImpl(SjChangeCaseUtil.convertCase(value, 'snake'));
         } 
     },
 

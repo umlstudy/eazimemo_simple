@@ -11,4 +11,8 @@ export abstract class AbsIdBaseDao<M extends AbsIdBaseModel> extends AbsDao<M> {
         SjAssertUtil.mustNotNull(id, "id is null. model is " + model);
         return table.where('id', id);
     }
+
+    protected getCountColumn(): string {
+        return 'id';
+    }
 }

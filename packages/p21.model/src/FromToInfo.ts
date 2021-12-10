@@ -1,4 +1,4 @@
 export interface FromToInfo {
-    from: Date;
-    to: Date;
+    from: string;
+    to: string;
 }
