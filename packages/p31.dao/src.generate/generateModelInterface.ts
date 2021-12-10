@@ -4,7 +4,7 @@ import { ColumnInfo } from '@sejong/model';
 import * as fs from 'fs';
 
 // 실행
-// ts-node packages/p51.graphql/src.generate/generateTypeDefsUsingTbl.ts
+// ts-node packages/p31.dao/src.generate/generateModelInterface.ts
 
 async function main() {
     const srcLoc = `${PROJECT_HOME}\\packages\\p31.dao`;
@@ -28,7 +28,7 @@ async function main() {
     for (let i = 0; i < tables.length; i++) {
         const table = tables[i];
 
-        const columnsTmp = await SjKnexSchemaUtil.extractColumns4Gql(database, table);
+        const columnsTmp = await SjKnexSchemaUtil.extractColumns(database, table);
         const columns = [] as ColumnInfo[];
         for (const key in columnsTmp) {
             const typeStr = columnsTmp[key];
@@ -48,14 +48,16 @@ async function main() {
             columns: columns
         });
 
-        const exportStr = `${pascalTableName}`;
+        const exportStr = `${pascalTableName}Model`;
         exportClasses.push(exportStr);
     }
 
     const converted = SjTemplateUtil.convert(tmplString, data);
-    fs.writeFileSync(targetLoc + "//GenTableTypeDefs.ts", converted);
+    fs.writeFileSync(targetLoc + "//GenModels.ts", converted);
 
-    console.log(exportClasses.join(','));
+    console.log('code packages/p21.model/src/index.ts');
+    console.log(exportClasses.join(', '));
+    console.log('cd packages/p21.model/;tsc;yarn install;cd ../..');
 }
 
 main();

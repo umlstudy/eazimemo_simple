@@ -1,20 +1,16 @@
 import { AbsIdBaseModel } from ".";
 
 export interface MemoModel extends AbsIdBaseModel {
-    'id': number;
-    'message'?: string | null;
-    'createdAt'?: Date | null;
-    'updatedAt'?: Date | null;
-}
-export interface TestTableModel extends AbsIdBaseModel {
-    'id': number;
-    'name'?: string | null;
-    'description'?: string | null;
+    id: number
+    message: string
+    createdAt: Date
+    updatedAt: Date
 }
 
-export interface UserModel {
-    'id': number;
-    'email'?: string | null;
-    'createdAt'?: Date | null;
-    'updatedAt'?: Date | null;
+export interface UserModel extends AbsIdBaseModel {
+    id: number
+    email: string
+    createdAt: Date
+    updatedAt: Date
 }
+
