@@ -1,6 +1,7 @@
-import { SjChangeCaseUtil, SjDataUtil, SjTemplateUtil } from '@sejong/common';
-import * as fs from 'fs';
+import { SjChangeCaseUtil, SjTemplateUtil } from '@sejong/common';
 import { knexConnection, PROJECT_HOME, SjKnexSchemaUtil } from '@sejong/dao';
+import { ColumnInfo } from '@sejong/model';
+import * as fs from 'fs';
 
 // 실행
 // ts-node packages/p51.graphql/src.generate/generateTypeDefsUsingTbl.ts
@@ -9,25 +10,27 @@ async function main() {
     const srcLoc = `${PROJECT_HOME}\\packages\\p51.graphql`;
     const targetLoc = srcLoc + "\\src\\graphql\\gen";
 
-    const tmplLoc = srcLoc + "\\src.generate\\generateResolverUsingTbl.tmpl";
+    const tmplLoc = srcLoc + "\\src.generate\\generateTypeDefsUsingTbl.tmpl";
     const tmplString = fs.readFileSync(tmplLoc, 'utf8');
 
     const exportClasses = [] as string[];
     const database = knexConnection;
     {
-        const data = {};
-        const tables = [];
+        const data = {} as any;
+        const tables = [] as any[];
         data['tables'] = tables;
 
         const table = "memo";
 
-        const columnsTmp = SjKnexSchemaUtil.extractColumns4Gql(database, table);
-        const columns = [];
+        const columnsTmp = await SjKnexSchemaUtil.extractColumns4Gql(database, table);
+        const columns = [] as ColumnInfo[];
         for (const key in columnsTmp) {
+            const typeStr = columnsTmp[key]; 
+            const camelColumnName = SjChangeCaseUtil.convertCase(key, 'camel');
             const col = {
-                columnName:key,
-                columnType:columns[key]
-            };
+                columnName: camelColumnName,
+                columnType: typeStr
+            } as ColumnInfo;
             columns.push(col);
         }
 

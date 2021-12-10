@@ -14,6 +14,7 @@ export const MemoTypeDefs = gql`
 
 const memo2 = { id: 100 };
 const memo3 = { id: 100, message:"hello", createAt:100, updateAt:100 };
+
 //2.
 export const MemoResolver = {
     Query: {

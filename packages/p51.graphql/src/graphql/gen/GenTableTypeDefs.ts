@@ -7,13 +7,15 @@ export const GenTableTypeDefs = gql`
   #
   type Memo {
     id: Int
-    message : String
+    message: String
     createdAt: Int
     updatedAt: Int
   }
   input MemoInput {
     id: Int
-    message : String
+    message: String
+    createdAt: Int
+    updatedAt: Int
   }
   type Query
   {
