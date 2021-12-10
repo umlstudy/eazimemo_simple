@@ -1,3 +1,5 @@
-export abstract class AbsModel {
-    
+import { FilterInfo } from "./FilterInfo";
+
+export interface AbsModel {
+    filterInfo:FilterInfo;
 }

@@ -1,10 +1,18 @@
+import { SjChangeCaseUtil } from "@sejong/common";
+
 const knexSetting = {
     development: {
         client: 'sqlite3',
         connection: {
             filename: './dev.sqlite'
-        },
+        }
+        ,
         debug: true
+        ,
+        wrapIdentifier: (value: string, origImpl: any, queryContext: any) => {
+            console.log(queryContext);
+            return origImpl(SjChangeCaseUtil.convertCase(value, 'pascal'));
+        } 
     },
 
     staging: {

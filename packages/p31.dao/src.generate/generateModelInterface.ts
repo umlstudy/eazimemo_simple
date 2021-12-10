@@ -57,7 +57,7 @@ async function main() {
 
     console.log('code packages/p21.model/src/index.ts');
     console.log(exportClasses.join(', '));
-    console.log('cd packages/p21.model/;tsc;yarn install;cd ../..');
+    console.log('cd packages/p21.model/;rm -rf dist;tsc;yarn install;cd ../..');
 }
 
 main();
