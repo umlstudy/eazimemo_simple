@@ -1,0 +1,29 @@
+
+import { gql } from "apollo-server-core";
+
+export const GenTableTypeDefs = gql`
+  {{#tables}}
+  #
+  # {{pascalTableName}}
+  #
+  type {{pascalTableName}} {
+    {{#columns}}
+    {{columnName}}: {{columnType}}
+    {{/columns}}
+  }
+  input {{pascalTableName}}Input {
+    {{#columns}}
+    {{columnName}}: {{columnType}}
+    {{/columns}}
+  }
+  type Query
+  {
+    get{{pascalTableName}}ByPrimaryKey({{camelTableName}}: {{pascalTableName}}Input!): {{pascalTableName}}
+  }
+  type Mutation {
+    add{{pascalTableName}}({{camelTableName}}: {{pascalTableName}}Input!): {{pascalTableName}}!
+    remove{{pascalTableName}}({{camelTableName}}: {{pascalTableName}}Input!): {{pascalTableName}}!
+    update{{pascalTableName}}({{camelTableName}}: {{pascalTableName}}Input!): {{pascalTableName}}!
+  }
+  {{/tables}}
+`;

@@ -12,8 +12,8 @@ import * as fs from 'fs';
 // https://github.com/rmp135/sql-ts
 
 async function main() {
-    const srcLoc = `${PROJECT_HOME}\\packages\\p31.dao\\src`;
-    const daoLoc = srcLoc + "\\dao";
+    const pkgLoc = `${PROJECT_HOME}\\packages\\p31.dao`;
+    const daoLoc = pkgLoc + "\\src\\dao";
 
     // const database = knex(knexDefaultSetting);
     // const inspector = SchemaInspector(database);
@@ -25,10 +25,10 @@ async function main() {
     //     fs.writeFileSync(daoLoc+"//Abs" + pascalTableName + "Dao.ts", converted);
     // });
 
-    const absTmplLoc = srcLoc + "\\generate\\generateAbsDao.tmpl";
+    const absTmplLoc = pkgLoc + "\\src.generate\\generateAbsDao.tmpl";
     const absTmplString = fs.readFileSync(absTmplLoc, 'utf8');
 
-    const tmplLoc = srcLoc + "\\generate\\generateDao.tmpl";
+    const tmplLoc = pkgLoc + "\\src.generate\\generateDao.tmpl";
     const tmplString = fs.readFileSync(tmplLoc, 'utf8');
 
     const exportClasses = [] as string[];

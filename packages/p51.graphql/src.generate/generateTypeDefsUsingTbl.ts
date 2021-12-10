@@ -1,34 +1,46 @@
+import { SjChangeCaseUtil, SjDataUtil, SjTemplateUtil } from '@sejong/common';
 import * as fs from 'fs';
-import { PROJECT_HOME } from '@sejong/dao';
+import { knexConnection, PROJECT_HOME, SjKnexSchemaUtil } from '@sejong/dao';
 
 // 실행
 // ts-node packages/p51.graphql/src.generate/generateTypeDefsUsingTbl.ts
 
 async function main() {
-    const srcLoc = `${PROJECT_HOME}\\packages\\p51.graphql\\src`;
-    const bizLoc = srcLoc + "\\biz";
+    const srcLoc = `${PROJECT_HOME}\\packages\\p51.graphql`;
+    const targetLoc = srcLoc + "\\src\\graphql\\gen";
 
-    const absTmplLoc = srcLoc + "\\generate\\generateAbsBiz.tmpl";
-    const absTmplString = fs.readFileSync(absTmplLoc, 'utf8');
-
-    const tmplLoc = srcLoc + "\\generate\\generateBiz.tmpl";
+    const tmplLoc = srcLoc + "\\src.generate\\generateResolverUsingTbl.tmpl";
     const tmplString = fs.readFileSync(tmplLoc, 'utf8');
 
     const exportClasses = [] as string[];
+    const database = knexConnection;
     {
+        const data = {};
+        const tables = [];
+        data['tables'] = tables;
+
         const table = "memo";
+
+        const columnsTmp = SjKnexSchemaUtil.extractColumns4Gql(database, table);
+        const columns = [];
+        for (const key in columnsTmp) {
+            const col = {
+                columnName:key,
+                columnType:columns[key]
+            };
+            columns.push(col);
+        }
+
         const pascalTableName = SjChangeCaseUtil.convertCase(table, 'pascal');
         const camelTableName = SjChangeCaseUtil.convertCase(table, 'camel');
-
-        const data = {
-            pascalModelName: pascalTableName
-            , camelModelName: camelTableName
-        };
-        const absConverted = SjTemplateUtil.convert(absTmplString, data);
-        fs.writeFileSync(bizLoc + "//Abs" + pascalTableName + "Biz.ts", absConverted);
+        tables.push({
+            pascalTableName: pascalTableName,
+            camelTableName: camelTableName,
+            columns: columns
+        });
 
         const converted = SjTemplateUtil.convert(tmplString, data);
-        fs.writeFileSync(bizLoc + "//" + pascalTableName + "Biz.ts", converted);
+        fs.writeFileSync(targetLoc + "//GenTableTypeDefs.ts", converted);
 
         const exportStr = `export { ${pascalTableName}Biz } from \"./biz/${pascalTableName}Biz\";`;
         exportClasses.push(exportStr);
