@@ -1,9 +1,9 @@
 import { camelCase, pascalCase, snakeCase } from 'change-case'
 
-export class SjChangeCaseUtil {
+export module SjChangeCaseUtil {
 
-    public static convertCase(name: string
-        , caseType: 'pascal' | 'camel' | 'snake' | 'lower' | 'upper') {
+    export const convertCase = (name: string
+        , caseType: 'pascal' | 'camel' | 'snake' | 'lower' | 'upper'): string => {
         switch (caseType) {
             case 'pascal':
                 return pascalCase(name)
@@ -18,5 +18,5 @@ export class SjChangeCaseUtil {
             default:
                 return name
         }
-    }
+    };
 }

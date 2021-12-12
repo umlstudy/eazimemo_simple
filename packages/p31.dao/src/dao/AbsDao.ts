@@ -72,6 +72,7 @@ export abstract class AbsDao<M extends AbsModel> {
                 const offsetQueryBuilder = clonedQueryBuilder.offset(offset);
                 return offsetQueryBuilder.limit(page.rowsPerPage);
             } else {
+                // 강제로 쿼리결과가 0건이 되도록 조건설 설정함
                 return queryBuilder.where('1', '=', '2');
             }
         } else {
