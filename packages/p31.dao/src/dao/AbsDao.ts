@@ -7,7 +7,7 @@ export abstract class AbsDao<M extends AbsModel> {
 
     public abstract getCountColumn(): string;
 
-    protected abstract whereByPrimaryKey(table: any, model: M): Promise<any>;
+    protected abstract whereByPrimaryKey(queryBuilder: Knex.QueryBuilder, model: M): Knex.QueryBuilder;
 
     public async insert(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
         const tableName = this.getTableName();
@@ -26,10 +26,13 @@ export abstract class AbsDao<M extends AbsModel> {
     }
 
     public async selectByPrimaryKey(knex: Knex, model: M): Promise<M | null> {
-        const tableName = this.getTableName();
-        const tbl = knex.select().from<M>(tableName);
-        const selected = await this.whereByPrimaryKey(tbl, model);
+        const queryBuilder = this.selectQueryBuilder(knex, model);
+        const selected = await this.whereByPrimaryKey(queryBuilder, model);
         return selected.length > 0 ? selected[0] as M : null;
+    }
+
+    protected selectColumns(queryBuilder: Knex.QueryBuilder): Knex.QueryBuilder {
+        return queryBuilder;
     }
 
     protected where(queryBuilder: Knex.QueryBuilder, model:M): Knex.QueryBuilder {
@@ -66,15 +69,16 @@ export abstract class AbsDao<M extends AbsModel> {
         }
     }
 
-    private static fromTo(queryBuilder: Knex.QueryBuilder, model: AbsModel)
+    private fromTo(queryBuilder: Knex.QueryBuilder, model: AbsModel)
         : Knex.QueryBuilder {
+        const tableName = this.getTableName();
         const fromTo = model.createdAtFromToInfo;
         if (fromTo) {
             if (fromTo.from) {
-                queryBuilder.where('createdAt', '>=', fromTo.from);
+                queryBuilder.where(tableName +'.createdAt', '>=', fromTo.from);
             }
             if (fromTo.to) {
-                queryBuilder.where('createdAt', '<=', fromTo.to);
+                queryBuilder.where(tableName +'.createdAt', '<=', fromTo.to);
             }
         }
 
@@ -83,14 +87,19 @@ export abstract class AbsDao<M extends AbsModel> {
 
     public async selectFirst(knex: Knex, model: AbsModel = {} as AbsModel)
         : Promise<M | null> {
-        return this.limit(knex, 1, model);
+        const limitOne = await this.limit(knex, 1, model);
+        return limitOne.length > 0 ? limitOne[0] as M : null;
     }
 
-    public async limit(knex: Knex, limitCnt:number, model:AbsModel={} as AbsModel)
-        : Promise<M | null> {
-        const selected = this.selectQueryBuilder(knex, model as M);
-        const limitOne = await selected.limit(limitCnt);
-        return limitOne.length > 0 ? limitOne[0] as M : null;
+    public async selectList(knex: Knex, model: M)
+        : Promise<M[]> {
+        return await this.select(knex, model);
+    }
+
+    public limit(knex: Knex, limitCnt:number, model:AbsModel={} as AbsModel)
+        : Knex.QueryBuilder {
+        const qb = this.selectQueryBuilder(knex, model as M).limit(limitCnt);
+        return qb;
     }
 
     public async select(knex: Knex, model: M)
@@ -118,7 +127,7 @@ export abstract class AbsDao<M extends AbsModel> {
             .whereRaw('1=1');
 
         // 페이징
-        queryBuilder = AbsDao.fromTo(queryBuilder, model);
+        queryBuilder = this.fromTo(queryBuilder, model);
         
         // 조건절
         queryBuilder = this.where(queryBuilder, model);
@@ -131,6 +140,9 @@ export abstract class AbsDao<M extends AbsModel> {
 
         // groupBy
         queryBuilder = this.groupBy(queryBuilder);
+
+        // selectColumns
+        queryBuilder = this.selectColumns(queryBuilder);
 
         return queryBuilder;
     }

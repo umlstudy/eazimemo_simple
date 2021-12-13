@@ -1,5 +1,6 @@
 import { SjAssertUtil, SjChangeCaseUtil } from "@sejong/common";
 import { AbsIdBaseModel } from "@sejong/model";
+import { Knex } from "knex";
 import { AbsDao } from "./AbsDao";
 
 export abstract class AbsIdBaseDao<M extends AbsIdBaseModel> extends AbsDao<M> {
@@ -12,10 +13,11 @@ export abstract class AbsIdBaseDao<M extends AbsIdBaseModel> extends AbsDao<M> {
         return this.getIdColumnName();
     }
 
-    protected async whereByPrimaryKey(table: any, model: M): Promise<any> {
+    protected whereByPrimaryKey(queryBuilder: Knex.QueryBuilder, model: M)
+        : Knex.QueryBuilder {
         const idColumnName = this.getIdColumnName();
         const id = (model as any)[idColumnName];
         SjAssertUtil.mustNotNull(id, idColumnName + " is null. model is " + model);
-        return await table.where(idColumnName, id);
+        return queryBuilder.where(idColumnName, id);
     }
 }
