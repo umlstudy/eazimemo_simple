@@ -30,15 +30,15 @@ module DbInitializer {
             if (!exists) {
                 // 1 테이블생성
                 await knex.schema.createTable(tableName, table => {
-                    table.increments()
-                    table.integer("version")
+                    table.increments(table+'_id')
+                    table.integer("version").notNullable();
                     table.timestamp("created_at").defaultTo(knex.fn.now());
                     table.timestamp("updated_at").defaultTo(knex.fn.now());
                 });
 
                 // 2 기본값 입력
                 await knex(tableName).insert([
-                    { version: 1 }
+                    { version: 3 }
                 ]);
             }
         }
@@ -51,8 +51,9 @@ module DbInitializer {
             if (!exists) {
                 // 1 테이블생성
                 await knex.schema.createTable(tableName, table => {
-                    table.increments()
-                    table.string("message")
+                    table.increments(table + '_id')
+                    table.string("message").notNullable();
+                    table.string("email").notNullable();
                     table.timestamp("created_at").defaultTo(knex.fn.now());
                     table.timestamp("updated_at").defaultTo(knex.fn.now());
                 });
@@ -68,7 +69,8 @@ module DbInitializer {
                 // 1 테이블생성
                 await knex.schema.createTable(tableName, table => {
                     table.increments()
-                    table.string("email")
+                    table.string("email").notNullable();
+                    table.string("name").notNullable();
                     table.timestamp("created_at").defaultTo(knex.fn.now());
                     table.timestamp("updated_at").defaultTo(knex.fn.now());
                 });

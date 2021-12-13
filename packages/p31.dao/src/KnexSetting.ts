@@ -4,7 +4,7 @@ const knexSetting = {
     development: {
         client: 'sqlite3',
         connection: {
-            filename: './dev.sqlite'
+            filename: './dev.sqlite3'
         }
         ,
         debug: true

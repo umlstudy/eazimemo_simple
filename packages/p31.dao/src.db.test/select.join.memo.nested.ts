@@ -3,6 +3,7 @@
 import { SjLogUtil } from '@sejong/common';
 import { Knex } from 'knex';
 import { knexConnection } from '../src/KnexConfig';
+import { MemoModel, UserModel } from '@sejong/model'
 
 // 실행
 // ts-node packages/p31.dao/src.db.test/select.join.memo.nested.ts
@@ -22,8 +23,10 @@ const mainReal = async (knex: Knex): Promise<void> => {
         ;
 
     // mix interface
-    // type FooBar = IFoo & IBar;
-    console.log(result);
+    type MemoUserModel = MemoModel & UserModel;
+    const memoUserModel = result[0] as MemoUserModel;
+
+    console.log(memoUserModel);
 }
 
 const main = async () => {

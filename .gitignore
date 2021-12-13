@@ -3,6 +3,7 @@
 *.map
 *.sqlite
 *.sqlite3
+*.sqlite_
 *.d.ts
 
 # Logs
