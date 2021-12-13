@@ -6,7 +6,8 @@ import * as fs from 'fs';
 // 실행
 // ts-node packages/p31.dao/src.generate/generateModelInterface.ts
 
-async function main() {
+export const generateModelInterface = async (projectHome: string, tables: string[]): Promise<void> => {
+
     const srcLoc = `${PROJECT_HOME}\\packages\\p31.dao`;
     const targetLoc = srcLoc + "\\..\\p21.model\\src";
 
@@ -19,11 +20,6 @@ async function main() {
     data['tables'] = tablesInData;
 
     const exportClasses = [] as string[];
-
-    // 테이블 변경 혹은 추가시 함께 변경.
-    const tables = [] as string[];
-    tables.push("memo");
-    tables.push("user");
 
     for (let i = 0; i < tables.length; i++) {
         const table = tables[i];
@@ -60,4 +56,9 @@ async function main() {
     console.log('cd packages/p21.model/;rm -rf dist;tsc;yarn install;cd ../..');
 }
 
-main();
+// 테이블 변경 혹은 추가시 함께 변경.
+const tables = [] as string[];
+tables.push("memo");
+tables.push("user");
+
+generateModelInterface(PROJECT_HOME, tables);

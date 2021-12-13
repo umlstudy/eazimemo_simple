@@ -7,8 +7,9 @@ import * as fs from 'fs';
 
 // https://github.com/rmp135/sql-ts
 
-async function main() {
-    const pkgLoc = `${PROJECT_HOME}\\packages\\p31.dao`;
+export const generateDao = async (projectHome: string, tables: string[]): Promise<void> => {
+
+    const pkgLoc = `${projectHome}\\packages\\p31.dao`;
     const daoLoc = pkgLoc + "\\src\\dao";
 
     const absTmplLoc = pkgLoc + "\\src.generate\\generateAbsDao.tmpl";
@@ -18,10 +19,6 @@ async function main() {
     const tmplString = fs.readFileSync(tmplLoc, 'utf8');
 
     const exportClasses = [] as string[];
-    // 테이블 변경 혹은 추가시 함께 변경.
-    const tables = [] as string[];
-    tables.push("memo");
-    tables.push("user");
 
     for (let i = 0; i < tables.length; i++) {
         const table = tables[i];
@@ -41,4 +38,9 @@ async function main() {
     exportClasses.forEach((s)=>console.log(s));
 }
 
-main();
+// 테이블 변경 혹은 추가시 함께 변경.
+const tables = [] as string[];
+tables.push("memo");
+tables.push("user");
+
+generateDao(PROJECT_HOME, tables);

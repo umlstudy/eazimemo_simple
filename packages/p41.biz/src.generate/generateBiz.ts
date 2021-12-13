@@ -5,8 +5,9 @@ import { PROJECT_HOME } from '@sejong/dao';
 // 실행
 // ts-node packages/p41.biz/src.generate/generateBiz.ts
 
-async function main() {
-    const srcLoc = `${PROJECT_HOME}\\packages\\p41.biz`;
+export const generateBiz = async (projectHome: string, tables: string[]): Promise<void> => {
+
+    const srcLoc = `${projectHome}\\packages\\p41.biz`;
     const bizLoc = srcLoc + "\\src\\biz";
 
     const absTmplLoc = srcLoc + "\\src.generate\\generateAbsBiz.tmpl";
@@ -16,10 +17,6 @@ async function main() {
     const tmplString = fs.readFileSync(tmplLoc, 'utf8');
 
     const exportClasses = [] as string[];
-    // 테이블 변경 혹은 추가시 함께 변경.
-    const tables = [] as string[];
-    tables.push("memo");
-    tables.push("user");
 
     for (let i = 0; i < tables.length; i++) {
         const table = tables[i];
@@ -44,4 +41,9 @@ async function main() {
     exportClasses.forEach((s)=>console.log(s));
 }
 
-main();
+// 테이블 변경 혹은 추가시 함께 변경.
+const tables = [] as string[];
+tables.push("memo");
+tables.push("user");
+
+generateBiz(PROJECT_HOME, tables);

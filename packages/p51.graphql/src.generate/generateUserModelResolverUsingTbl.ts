@@ -5,18 +5,14 @@ import * as fs from 'fs';
 // 실행
 // ts-node packages/p51.graphql/src.generate/generateUserModelResolverUsingTbl.ts
 
-async function main() {
-    const srcLoc = `${PROJECT_HOME}\\packages\\p51.graphql`;
+export const generateUserModelResolverUsingTbl = async (projectHome:string, tables:string[]):Promise<void> => {
+    const srcLoc = `${projectHome}\\packages\\p51.graphql`;
     const targetLoc = srcLoc + "\\src\\graphql\\resolver";
 
     const tmplLoc = srcLoc + "\\src.generate\\generateUserModelResolverUsingTbl.tmpl";
     const tmplString = fs.readFileSync(tmplLoc, 'utf8');
 
     const exportClasses = [] as string[];
-    // 테이블 변경 혹은 추가시 함께 변경.
-    const tables = [] as string[];
-    tables.push("memo");
-    tables.push("user");
 
     for (let i = 0; i < tables.length; i++) {
 
@@ -37,6 +33,11 @@ async function main() {
     }
 
     exportClasses.forEach((s) => console.log(s));
-}
+};
 
-main();
+// 테이블 변경 혹은 추가시 함께 변경.
+const tables = [] as string[];
+tables.push("memo");
+tables.push("user");
+
+generateUserModelResolverUsingTbl(PROJECT_HOME, tables);
