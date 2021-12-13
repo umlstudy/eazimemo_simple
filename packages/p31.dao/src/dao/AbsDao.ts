@@ -1,31 +1,11 @@
 import { AbsModel } from "@sejong/model";
 import { Knex } from "knex";
 
-export type WhereFunc<M extends AbsModel> = 
-    (queryBuilder: Knex.QueryBuilder, model: M)
-    => Knex.QueryBuilder ;
-
-const createAtFromToWhereFunc: WhereFunc < AbsModel> = (queryBuilder: Knex.QueryBuilder, model: AbsModel)
-    : Knex.QueryBuilder => {
-
-    const fromTo = model.createdAtFromToInfo;
-    if (fromTo) {
-        if (fromTo.from) {
-            queryBuilder.where('createdAt', '>=', fromTo.from);
-        }
-        if (fromTo.to) {
-            queryBuilder.where('createdAt', '<=', fromTo.to);
-        }
-    }
-
-    return queryBuilder;
-};
-
 export abstract class AbsDao<M extends AbsModel> {
 
     protected abstract getTableName(): string;
 
-    protected abstract getCountColumn(): string;
+    public abstract getCountColumn(): string;
 
     protected abstract whereByPrimaryKey(table: any, model: M): Promise<any>;
 
@@ -45,61 +25,113 @@ export abstract class AbsDao<M extends AbsModel> {
         return table.del();
     }
 
-    public async selectFirst(knex: Knex): Promise<M | null> {
-        const tableName = this.getTableName();
-        const selected = await knex.select()
-            .from<M>(tableName).limit(1);
-        return selected.length > 0 ? selected[0] as M : null;
-    }
-
-    public async selectById(knex: Knex, model: M): Promise<M | null> {
+    public async selectByPrimaryKey(knex: Knex, model: M): Promise<M | null> {
         const tableName = this.getTableName();
         const tbl = knex.select().from<M>(tableName);
         const selected = await this.whereByPrimaryKey(tbl, model);
         return selected.length > 0 ? selected[0] as M : null;
     }
 
-    protected async paging(queryBuilder: Knex.QueryBuilder, model: M)
-    : Promise<Knex.QueryBuilder> {
+    protected where(queryBuilder: Knex.QueryBuilder, model:M): Knex.QueryBuilder {
+        console.log(model);
+        return queryBuilder;
+    }
+
+    protected joining(queryBuilder: Knex.QueryBuilder): Knex.QueryBuilder {
+        return queryBuilder;
+    }
+
+    protected orderBy(queryBuilder: Knex.QueryBuilder): Knex.QueryBuilder {
+        return queryBuilder;
+    }
+
+    protected groupBy(queryBuilder: Knex.QueryBuilder): Knex.QueryBuilder {
+        return queryBuilder;
+    }
+
+    private static paging(queryBuilder: Knex.QueryBuilder, model: AbsModel, totalRowCount:number)
+            : Knex.QueryBuilder {
         const page = model.pageInfo;
         if (page) {
-            const totalCountObject = await queryBuilder.clone()
-                .count({ cnt: this.getCountColumn() }) as any;
-            const totalCount = totalCountObject[0].cnt;
             const offset = page.curPagePos * page.rowsPerPage;
-            if (totalCount > offset) {
-                const clonedQueryBuilder = queryBuilder.clone();
-                const offsetQueryBuilder = clonedQueryBuilder.offset(offset);
+            if (totalRowCount > offset) {
+                const offsetQueryBuilder = queryBuilder.offset(offset);
                 return offsetQueryBuilder.limit(page.rowsPerPage);
             } else {
                 // 강제로 쿼리결과가 0건이 되도록 조건설 설정함
-                return queryBuilder.where('1', '=', '2');
+                return queryBuilder.whereRaw('1=2');
             }
         } else {
             return queryBuilder;
         }
     }
 
-    public async selectByDefaultFilter(knex: Knex, model: M): Promise<M[]> {
-        if (!model.createdAtFromToInfo && !model.pageInfo) {
-            throw 'fromTo and page filter null';
-        }
-
-        return this.selectByFilters(knex, model, createAtFromToWhereFunc);
-    }
-
-    public async selectByFilters(knex: Knex, model: M, ...whereFunc:WhereFunc<M>[]): Promise<M[]> {
-
-        const tableName = this.getTableName();
-        let queryBuilderTmp = knex.select().from<M>(tableName);
-        if (whereFunc && whereFunc.length > 0 ) {
-            for( let i=0;i<whereFunc.length;i++ ) {
-                queryBuilderTmp = whereFunc[i](queryBuilderTmp, model);
+    private static fromTo(queryBuilder: Knex.QueryBuilder, model: AbsModel)
+        : Knex.QueryBuilder {
+        const fromTo = model.createdAtFromToInfo;
+        if (fromTo) {
+            if (fromTo.from) {
+                queryBuilder.where('createdAt', '>=', fromTo.from);
+            }
+            if (fromTo.to) {
+                queryBuilder.where('createdAt', '<=', fromTo.to);
             }
         }
-        const queryBuilder = queryBuilderTmp;
 
-        const result = await this.paging(queryBuilder, model);
-        return result;
+        return queryBuilder;
+    }
+
+    public async selectFirst(knex: Knex, model: AbsModel = {} as AbsModel)
+        : Promise<M | null> {
+        return this.limit(knex, 1, model);
+    }
+
+    public async limit(knex: Knex, limitCnt:number, model:AbsModel={} as AbsModel)
+        : Promise<M | null> {
+        const selected = this.selectQueryBuilder(knex, model as M);
+        const limitOne = await selected.limit(limitCnt);
+        return limitOne.length > 0 ? limitOne[0] as M : null;
+    }
+
+    public async select(knex: Knex, model: M)
+        : Promise<Knex.QueryBuilder> {
+        let queryBuilder = this.selectQueryBuilder(knex, model);
+
+        // 페이징
+        const page = model.pageInfo;
+        if (page) {
+            const totalCountObject = await queryBuilder.clone()
+                .count({ cnt: this.getCountColumn() }) as any;
+            const totalRowCount = totalCountObject[0].cnt;
+            if (totalRowCount > 0) {
+                queryBuilder = AbsDao.paging(queryBuilder, model, totalRowCount);
+            }
+        }
+
+        return queryBuilder;
+    }
+
+    public selectQueryBuilder(knex: Knex, model: M)
+        : Knex.QueryBuilder {
+        const tableName = this.getTableName();
+        let queryBuilder = knex.select().from<M>(tableName)
+            .whereRaw('1=1');
+
+        // 페이징
+        queryBuilder = AbsDao.fromTo(queryBuilder, model);
+        
+        // 조건절
+        queryBuilder = this.where(queryBuilder, model);
+
+        // 조인절
+        queryBuilder = this.joining(queryBuilder);
+
+        // orderBy
+        queryBuilder = this.orderBy(queryBuilder);
+
+        // groupBy
+        queryBuilder = this.groupBy(queryBuilder);
+
+        return queryBuilder;
     }
 }

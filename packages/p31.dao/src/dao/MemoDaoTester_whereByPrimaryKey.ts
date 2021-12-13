@@ -6,7 +6,7 @@ import { MemoDao } from "./MemoDao";
 const main = async () => {
   const memo = {} as MemoModel;
   memo.memoId=1;
-  const memos = await MemoDao.INS.selectById(knexConnection, memo!);
+  const memos = await MemoDao.INS.selectByPrimaryKey(knexConnection, memo!);
   console.log(memos);
 }
 
