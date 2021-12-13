@@ -1,18 +1,18 @@
 import { AbsIdBaseModel } from ".";
 
 export interface MemoModel extends AbsIdBaseModel {
-    id: number
+    memoId: number
     message: string
+    email: string
     createdAt: Date
     updatedAt: Date
-    email: string
 }
 
 export interface UserModel extends AbsIdBaseModel {
-    id: number
+    userId: number
     email: string
+    name: string
     createdAt: Date
     updatedAt: Date
-    name: string
 }
 
