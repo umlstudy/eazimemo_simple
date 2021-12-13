@@ -1,4 +1,4 @@
-import { MemoModel } from "@sejong/model";
+import { MemoModel, UserModel } from "@sejong/model";
 import { knexConnection } from "../KnexConfig";
 import { MemoDao } from "./MemoDao";
 
@@ -12,8 +12,14 @@ async function main() {
   console.log("=> memo result #2");
   console.log(memoR);
 
-  const memoList = await MemoDao.INS.selectList(knexConnection, {} as MemoModel);
-  console.log(memoList.length + "건 검색");
+  type MemoUser = MemoModel & UserModel;
+  const memoList = await MemoDao.INS.selectList(knexConnection, {} as MemoModel) as MemoUser[];
+
+  for ( let i=0;i<memoList.length;i++ ) {
+    console.log("memoList => " + memoList[i].name);
+  }
+
+  console.log(memoList.length + "건 검색 ");
 }
 
 main();
