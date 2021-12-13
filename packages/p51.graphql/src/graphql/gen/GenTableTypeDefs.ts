@@ -10,12 +10,14 @@ export const GenTableTypeDefs = gql`
     message: String
     createdAt: Int
     updatedAt: Int
+    email: String
   }
   input MemoInput {
     id: Int
     message: String
     createdAt: Int
     updatedAt: Int
+    email: String
   }
   type Query
   {

@@ -8,7 +8,7 @@ import * as fs from 'fs';
 
 export const generateModelInterface = async (projectHome: string, tables: string[]): Promise<void> => {
 
-    const srcLoc = `${PROJECT_HOME}\\packages\\p31.dao`;
+    const srcLoc = `${projectHome}\\packages\\p31.dao`;
     const targetLoc = srcLoc + "\\..\\p21.model\\src";
 
     const tmplLoc = srcLoc + "\\src.generate\\generateModelInterface.tmpl";

@@ -5,6 +5,7 @@ export interface MemoModel extends AbsIdBaseModel {
     message: string
     createdAt: Date
     updatedAt: Date
+    email: string
 }
 
 export interface UserModel extends AbsIdBaseModel {
