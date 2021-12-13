@@ -8,6 +8,7 @@ import { AppSchema } from "./AppSchema";
 const server = new ApolloServer({ schema: AppSchema });
 
 //2
-server.listen().then(({ url }) => {
+const PORT = 5000;
+server.listen(PORT).then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
 });
