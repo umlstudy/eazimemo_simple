@@ -9,10 +9,13 @@ const knexSetting = {
         ,
         debug: true
         ,
-        wrapIdentifier: (value: string, origImpl: any, queryContext: any) => {
-            console.log(queryContext);
-            return origImpl(SjChangeCaseUtil.convertCase(value, 'snake'));
-        } 
+        transformInput: (identifier: string):string => SjChangeCaseUtil.convertCase(identifier, 'snake')
+        ,
+        transformOutput: (identifier: string): string => SjChangeCaseUtil.convertCase(identifier, 'camel')
+        // wrapIdentifier: (value: string, origImpl: any, queryContext: any) => {
+        //     console.log(queryContext);
+        //     return origImpl(SjChangeCaseUtil.convertCase(value, 'camel'));
+        // } 
     },
 
     staging: {

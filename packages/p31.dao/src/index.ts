@@ -16,3 +16,6 @@ export { UserDao } from "./dao/UserDao";
 
 export const PROJECT_HOME = "D:\\gitrepos\\eazimemo_simple";
 
+// 빌드
+// cd packages/p31.dao;tsc;yarn install;cd ../..
+
