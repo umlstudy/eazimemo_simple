@@ -28,7 +28,7 @@ export const generateUserModelResolverUsingTbl = async (projectHome:string, tabl
         const converted = SjTemplateUtil.convert(tmplString, data);
         fs.writeFileSync(targetLoc + "//" + pascalTableName + "Resolver.ts", converted);
 
-        const exportStr = `export { ${pascalTableName}Biz } from \"./biz/${pascalTableName}Biz\";`;
+        const exportStr = `typeDefs.push(${pascalTableName}TypeDefs);`;
         exportClasses.push(exportStr);
     }
 
