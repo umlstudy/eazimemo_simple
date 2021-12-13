@@ -16,6 +16,6 @@
     "dist",
     "src.generate",
     "node_modules",
-    "src.migration"
+    "src.migration","src.db.test"
   ]
 }
