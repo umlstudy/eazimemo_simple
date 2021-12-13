@@ -13,7 +13,8 @@ import { knexConnection } from '../src/KnexConfig';
 
 module DbInitializer {
 
-    const CURRENT_DB_VERSION = 2;
+    // user.user_name 추가
+    const CURRENT_DB_VERSION = 3;
 
     export const up = async (knex: Knex):Promise<void> => {
         await createMemoTable(knex);
@@ -85,10 +86,10 @@ module DbInitializer {
         let version = (versionGetFirst as any).version as number;
         SjLogUtil.debug('version => ' + version);
         
-        while ( version < CURRENT_DB_VERSION ) {
-            version ++;
+        await knex.transaction(async (trx):Promise<Knex.Transaction> => {
+            while ( version < CURRENT_DB_VERSION ) {
+                version ++;
 
-            await knex.transaction(async (trx):Promise<Knex.Transaction> => {
                 console.log("transaction start...");
                 if ( version == 2 ) {
                     await trx.raw(`alter table memo add column email varchar(50)`);
@@ -99,9 +100,13 @@ module DbInitializer {
                     await trx.raw(`update db_version set version=2`);
                 }
 
-                return trx;
-            });
-        }
+                if (version == 3) {
+                    await trx.raw(`alter table user add column name varchar(50)`);
+                    await trx.raw(`update db_version set version=3`);
+                }
+            }
+            return trx;
+        });
     }
 }
 

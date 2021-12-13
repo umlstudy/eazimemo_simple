@@ -13,5 +13,6 @@ export interface UserModel extends AbsIdBaseModel {
     email: string
     createdAt: Date
     updatedAt: Date
+    name: string
 }
 

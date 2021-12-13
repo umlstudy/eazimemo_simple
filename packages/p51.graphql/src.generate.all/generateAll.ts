@@ -1,10 +1,10 @@
-import { PROJECT_HOME } from '@sejong/dao';
 import { generateResolverUsingTbl } from '../src.generate/generateResolverUsingTbl';
 import { generateTypeDefsUsingTbl } from '../src.generate/generateTypeDefsUsingTbl';
 import { generateUserModelResolverUsingTbl } from '../src.generate/generateUserModelResolverUsingTbl';
 import { generateBiz } from '../../p41.biz/src.generate/generateBiz';
 import { generateModelInterface } from '@sejong/dao/src.generate/generateModelInterface';
 import { generateDao } from '@sejong/dao/src.generate/generateDao';
+import { PROJECT_HOME } from '@sejong/dao/src/index'
 
 // 실행
 // ts-node packages/p51.graphql/src.generate.all/generateAll.ts
@@ -16,14 +16,14 @@ const main=async ()=> {
     tables.push("memo");
     tables.push("user");
     
-    generateModelInterface(PROJECT_HOME, tables);
-    generateDao(PROJECT_HOME, tables);
+    await generateModelInterface(PROJECT_HOME, tables);
+    await generateDao(PROJECT_HOME, tables);
     
-    generateBiz(PROJECT_HOME, tables);
+    await generateBiz(PROJECT_HOME, tables);
     
-    generateResolverUsingTbl(PROJECT_HOME, tables);
-    generateTypeDefsUsingTbl(PROJECT_HOME, tables);
-    generateUserModelResolverUsingTbl(PROJECT_HOME, tables);
+    await generateResolverUsingTbl(PROJECT_HOME, tables);
+    await generateTypeDefsUsingTbl(PROJECT_HOME, tables);
+    await generateUserModelResolverUsingTbl(PROJECT_HOME, tables);
     
     console.log('cd packages/p21.model/;rm -rf dist;tsc;yarn install;cd ../..');
     console.log('cd packages/p31.dao/;rm -rf dist;tsc;yarn install;cd ../..');

@@ -36,12 +36,14 @@ export const GenTableTypeDefs = gql`
     email: String
     createdAt: Int
     updatedAt: Int
+    name: String
   }
   input UserInput {
     id: Int
     email: String
     createdAt: Int
     updatedAt: Int
+    name: String
   }
   type Query
   {
