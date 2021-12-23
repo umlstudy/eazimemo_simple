@@ -26,7 +26,7 @@ export class UserBiz extends AbsUserBiz {
     public async addUser(trx: Knex.Transaction<any, any[]>, model: UserModel)
         : Promise<UserModel> {
         const id = await this.insert(trx, model);
-        const result = await this.getUserByPrimaryKey(trx, { id: id } as UserModel);
+        const result = await this.getUserByPrimaryKey(trx, { id: id.toString() } as UserModel);
         return result!;
     }
 

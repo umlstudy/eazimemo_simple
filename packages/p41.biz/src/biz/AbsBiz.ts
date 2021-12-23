@@ -7,7 +7,7 @@ export abstract class AbsBiz<M extends AbsModel> {
     protected abstract getAbsDao(): AbsDao<M>;
 
     public async selectById(knex: Knex, model: M): Promise<M | null> {
-        return this.getAbsDao().selectById(knex, model);
+        return this.getAbsDao().selectByPrimaryKey(knex, model);
     }
 
     public async selectFirst(knex: Knex): Promise<M | null> {

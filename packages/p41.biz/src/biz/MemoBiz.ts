@@ -26,7 +26,7 @@ export class MemoBiz extends AbsMemoBiz {
     public async addMemo(trx: Knex.Transaction<any, any[]>, model: MemoModel)
         : Promise<MemoModel> {
         const id = await this.insert(trx, model);
-        const result = await this.getMemoByPrimaryKey(trx, { id: id } as MemoModel);
+        const result = await this.getMemoByPrimaryKey(trx, { id: id.toString() } as MemoModel);
         return result!;
     }
 

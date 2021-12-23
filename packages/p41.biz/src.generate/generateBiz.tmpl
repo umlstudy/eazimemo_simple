@@ -26,7 +26,7 @@ export class {{pascalModelName}}Biz extends Abs{{pascalModelName}}Biz {
     public async add{{pascalModelName}}(trx: Knex.Transaction<any, any[]>, model: {{pascalModelName}}Model)
         : Promise<{{pascalModelName}}Model> {
         const id = await this.insert(trx, model);
-        const result = await this.get{{pascalModelName}}ByPrimaryKey(trx, { id: id } as {{pascalModelName}}Model);
+        const result = await this.get{{pascalModelName}}ByPrimaryKey(trx, { id: id.toString() } as {{pascalModelName}}Model);
         return result!;
     }
 
