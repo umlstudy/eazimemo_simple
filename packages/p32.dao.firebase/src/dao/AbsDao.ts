@@ -1,5 +1,5 @@
 import { AbsModel } from "@sejong/model";
-import { Knex } from "knex";
+import { doc, WriteBatch } from "firebase/firestore/lite";
 
 export abstract class AbsDao<M extends AbsModel> {
 
@@ -9,7 +9,10 @@ export abstract class AbsDao<M extends AbsModel> {
 
     protected abstract whereByPrimaryKey(queryBuilder: Knex.QueryBuilder, model: M): Knex.QueryBuilder;
 
-    public async insert(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
+    public async insert(writeBatch: WriteBatch, model: M): Promise<number> {
+
+        const memo1Ref = doc(writeBatch., this.getTableName(), "memo1");
+        batch.set(memo1Ref, { message: "create1" });
         const tableName = this.getTableName();
         return await trx.table(tableName).insert(model);
     }
@@ -52,46 +55,13 @@ export abstract class AbsDao<M extends AbsModel> {
         return queryBuilder;
     }
 
-    private static paging(queryBuilder: Knex.QueryBuilder, model: AbsModel, totalRowCount:number)
-            : Knex.QueryBuilder {
-        const page = model.pageInfo;
-        if (page) {
-            const offset = page.curPagePos * page.rowsPerPage;
-            if (totalRowCount > offset) {
-                const offsetQueryBuilder = queryBuilder.offset(offset);
-                return offsetQueryBuilder.limit(page.rowsPerPage);
-            } else {
-                // 강제로 쿼리결과가 0건이 되도록 조건설 설정함
-                return queryBuilder.whereRaw('1=2');
-            }
-        } else {
-            return queryBuilder;
-        }
-    }
-
-    private fromTo(queryBuilder: Knex.QueryBuilder, model: AbsModel)
-        : Knex.QueryBuilder {
-        const tableName = this.getTableName();
-        const fromTo = model.createdAtFromToInfo;
-        if (fromTo) {
-            if (fromTo.from) {
-                queryBuilder.where(tableName +'.createdAt', '>=', fromTo.from);
-            }
-            if (fromTo.to) {
-                queryBuilder.where(tableName +'.createdAt', '<=', fromTo.to);
-            }
-        }
-
-        return queryBuilder;
-    }
-
-    public async selectFirst(knex: Knex, model: AbsModel = {} as AbsModel)
+    public async selectFirst(model: AbsModel = {} as AbsModel)
         : Promise<M | null> {
         const limitOne = await this.limit(knex, 1, model);
         return limitOne.length > 0 ? limitOne[0] as M : null;
     }
 
-    public async selectList(knex: Knex, model: M)
+    public async selectList(model: M)
         : Promise<M[]> {
         return await this.select(knex, model);
     }

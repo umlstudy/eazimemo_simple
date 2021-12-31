@@ -111,9 +111,6 @@ async function batchTest() {
     const memo1Ref = doc(db, "eazimemo_simple", "memo1");
     batch.set(memo1Ref, { message: "create1" });
 
-    const memo11Ref = doc(db, "eazimemo_simple", "12");
-    batch.set(memo11Ref, { message: "create122" });
-
     console.log('메시지수정');
 
     // Update the population of 'SF'
@@ -188,12 +185,12 @@ async function main() {
         await incrementTest();
     }
 
-    const runBatchTest = true;
+    const runBatchTest = false;
     if (runBatchTest) {
         await batchTest();
     }
 
-    const runPagingTest = false;
+    const runPagingTest = true;
     if (runPagingTest) {
         await pagingTest();
     }
