@@ -7,7 +7,7 @@ export namespace SequenceGenerator {
     // const SEQ_STRING_FORMAT = '%016d';
     const SEQ_STRING_FORMAT = '%d';
 
-    const nextString = async (db: Firestore , tableName: string):Promise<string> => {
+    export const nextString = async (db: Firestore , tableName: string):Promise<string> => {
         const seq = await FirebaseSequence.nextString(db, SEQUENCE_TBL_NAME, tableName, SEQ_STRING_FORMAT);
         return seq;
     }

@@ -11,4 +11,12 @@ export module SjAssertUtil {
             throw new Error(message);
         }
     };
+
+    export const mustTrue = (value: boolean, message?: string): void => {
+
+        if (!value) {
+            message = message || "값이 참이 아닙니다.";
+            throw new Error(message);
+        }
+    };
 }
