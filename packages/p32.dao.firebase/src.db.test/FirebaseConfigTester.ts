@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, doc, getDocs, getFirestore, increment, limit, orderBy, query, runTransaction, serverTimestamp, setDoc, startAfter, updateDoc, where, writeBatch } from 'firebase/firestore/lite';
-import { firebaseConfig } from "./FirebaseConfig";
+import { firebaseConfig } from "../src/FirebaseConfig";
 
 // npx ts-node packages/p32.dao.firebase/src/FirebaseConfigTester.ts
 

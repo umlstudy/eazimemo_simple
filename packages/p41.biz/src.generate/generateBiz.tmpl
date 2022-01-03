@@ -1,12 +1,11 @@
 import { SjAssertUtil } from "@sejong/common";
 import { AbsDao, {{pascalModelName}}Dao } from "@sejong/dao";
-import { {{pascalModelName}}Model } from "@sejong/model";
-import { Knex } from "knex";
+import { {{pascalModelName}}Model, TranObjectOwner } from "@sejong/model";
 import { Abs{{pascalModelName}}Biz } from "./Abs{{pascalModelName}}Biz";
 
-// 자동생성된 코드
 export class {{pascalModelName}}Biz extends Abs{{pascalModelName}}Biz {
 
+    // 자동생성된 코드_시작
     public static readonly INS = new {{pascalModelName}}Biz();
 
     protected getAbsDao(): AbsDao<{{pascalModelName}}Model> {
@@ -17,30 +16,31 @@ export class {{pascalModelName}}Biz extends Abs{{pascalModelName}}Biz {
         SjAssertUtil.mustNotNull(model, "model is null");
     }
 
-    public async get{{pascalModelName}}ByPrimaryKey(knex: Knex, model: {{pascalModelName}}Model)
+    public async get{{pascalModelName}}ByPrimaryKey(model: {{pascalModelName}}Model)
         : Promise<{{pascalModelName}}Model | null> {
-        const result = await this.selectById(knex, model);
+        const result = await this.selectById(model);
         return result;
     }
 
-    public async add{{pascalModelName}}(trx: Knex.Transaction<any, any[]>, model: {{pascalModelName}}Model)
+    public async add{{pascalModelName}}(too: TranObjectOwner, model: {{pascalModelName}}Model)
         : Promise<{{pascalModelName}}Model> {
-        const id = await this.insert(trx, model);
-        const result = await this.get{{pascalModelName}}ByPrimaryKey(trx, { id: id.toString() } as {{pascalModelName}}Model);
+        const id = await this.insert(too, model);
+        const result = await this.get{{pascalModelName}}ByPrimaryKey({ id: id.toString() } as {{pascalModelName}}Model);
         return result!;
     }
 
-    public async remove{{pascalModelName}}(trx: Knex.Transaction<any, any[]>, model: {{pascalModelName}}Model)
+    public async remove{{pascalModelName}}(too: TranObjectOwner, model: {{pascalModelName}}Model)
         : Promise<{{pascalModelName}}Model> {
-        const result = await this.get{{pascalModelName}}ByPrimaryKey(trx, model);
-        await this.delete(trx, model);
+        const result = await this.get{{pascalModelName}}ByPrimaryKey(model);
+        await this.delete(too, model);
         return result!;
     }
 
-    public async update{{pascalModelName}}(trx: Knex.Transaction<any, any[]>, model: {{pascalModelName}}Model)
+    public async update{{pascalModelName}}(too: TranObjectOwner, model: {{pascalModelName}}Model)
         : Promise<{{pascalModelName}}Model> {
-        await this.update(trx, model);
-        const result = await this.get{{pascalModelName}}ByPrimaryKey(trx, model);
+        await this.update(too, model);
+        const result = await this.get{{pascalModelName}}ByPrimaryKey(model);
         return result!;
     }
+    // 자동생성된 코드_종료
 }

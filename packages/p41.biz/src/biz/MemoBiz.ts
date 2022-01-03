@@ -1,12 +1,11 @@
 import { SjAssertUtil } from "@sejong/common";
 import { AbsDao, MemoDao } from "@sejong/dao";
-import { MemoModel } from "@sejong/model";
-import { Knex } from "knex";
+import { MemoModel, TranObjectOwner } from "@sejong/model";
 import { AbsMemoBiz } from "./AbsMemoBiz";
 
-// 자동생성된 코드
 export class MemoBiz extends AbsMemoBiz {
 
+    // 자동생성된 코드_시작
     public static readonly INS = new MemoBiz();
 
     protected getAbsDao(): AbsDao<MemoModel> {
@@ -17,30 +16,31 @@ export class MemoBiz extends AbsMemoBiz {
         SjAssertUtil.mustNotNull(model, "model is null");
     }
 
-    public async getMemoByPrimaryKey(knex: Knex, model: MemoModel)
+    public async getMemoByPrimaryKey(model: MemoModel)
         : Promise<MemoModel | null> {
-        const result = await this.selectById(knex, model);
+        const result = await this.selectById(model);
         return result;
     }
 
-    public async addMemo(trx: Knex.Transaction<any, any[]>, model: MemoModel)
+    public async addMemo(too: TranObjectOwner, model: MemoModel)
         : Promise<MemoModel> {
-        const id = await this.insert(trx, model);
-        const result = await this.getMemoByPrimaryKey(trx, { id: id.toString() } as MemoModel);
+        const id = await this.insert(too, model);
+        const result = await this.getMemoByPrimaryKey({ id: id.toString() } as MemoModel);
         return result!;
     }
 
-    public async removeMemo(trx: Knex.Transaction<any, any[]>, model: MemoModel)
+    public async removeMemo(too: TranObjectOwner, model: MemoModel)
         : Promise<MemoModel> {
-        const result = await this.getMemoByPrimaryKey(trx, model);
-        await this.delete(trx, model);
+        const result = await this.getMemoByPrimaryKey(model);
+        await this.delete(too, model);
         return result!;
     }
 
-    public async updateMemo(trx: Knex.Transaction<any, any[]>, model: MemoModel)
+    public async updateMemo(too: TranObjectOwner, model: MemoModel)
         : Promise<MemoModel> {
-        await this.update(trx, model);
-        const result = await this.getMemoByPrimaryKey(trx, model);
+        await this.update(too, model);
+        const result = await this.getMemoByPrimaryKey(model);
         return result!;
     }
+    // 자동생성된 코드_종료
 }

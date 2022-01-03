@@ -1,31 +1,30 @@
 import { AbsDao } from "@sejong/dao";
-import { AbsModel } from "@sejong/model";
-import { Knex } from "knex";
+import { AbsModel, TranObjectOwner } from "@sejong/model";
 
 export abstract class AbsBiz<M extends AbsModel> {
 
     protected abstract getAbsDao(): AbsDao<M>;
 
-    public async selectById(knex: Knex, model: M): Promise<M | null> {
-        return this.getAbsDao().selectByPrimaryKey(knex, model);
+    public async selectById(model: M): Promise<M | null> {
+        return this.getAbsDao().selectByPrimaryKey(model);
     }
 
-    public async selectFirst(knex: Knex): Promise<M | null> {
-        return this.getAbsDao().selectFirst(knex);
+    public async selectFirst(): Promise<M | null> {
+        return this.getAbsDao().selectFirst();
     }
 
     protected abstract validate4Insert(model: M):void;
 
-    public async insert(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
+    public async insert(too: TranObjectOwner, model: M): Promise<number> {
         this.validate4Insert(model);
-        return await this.getAbsDao().insert(trx, model);
+        return await this.getAbsDao().insert(too, model);
     }
 
-    public async update(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
-        return await this.getAbsDao().update(trx, model);
+    public async update(too: TranObjectOwner, model: M): Promise<number> {
+        return await this.getAbsDao().update(too, model);
     }
 
-    public async delete(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
-        return await this.getAbsDao().delete(trx, model);
+    public async delete(too: TranObjectOwner, model: M): Promise<number> {
+        return await this.getAbsDao().delete(too, model);
     }
 }

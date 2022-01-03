@@ -1,7 +1,6 @@
 import { SjStringUtil } from "@sejong/common";
 import { doc, Firestore, runTransaction, setDoc } from "firebase/firestore/lite";
 
-
 export namespace FirebaseSequence {
 
     export const nextString = async (

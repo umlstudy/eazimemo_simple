@@ -1,4 +1,4 @@
-import { knexConnection } from '../..';
+import { knexConnection } from '../../KnexConfig';
 import { SjKnexSchemaUtil } from './SjKnexSchemaUtil';
 
 // 실행

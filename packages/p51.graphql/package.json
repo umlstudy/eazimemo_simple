@@ -12,8 +12,7 @@
     "@sejong/model": "^1.0.0",
     "apollo-server": "^3.5.0",
     "apollo-server-express": "^3.5.0",
-    "graphql": "^16.0.1",
-    "knex": "^0.95.14"
+    "graphql": "^16.0.1"
   },
   "devDependencies": {
     "ts-node": "^10.4.0",

@@ -1,7 +1,16 @@
-import { AbsModel } from "@sejong/model";
+import { AbsModel, TranObjectOwner } from "@sejong/model";
 import { Knex } from "knex";
+import { knexConnection } from "../KnexConfig";
 
 export abstract class AbsDao<M extends AbsModel> {
+
+    public static async transaction(codePart: (tranObjectOwner: TranObjectOwner) => Promise<void>)
+        : Promise<void> {
+        knexConnection.transaction(async trx => {
+            const tranObjectOwner = new TranObjectOwner(trx);
+            await codePart(tranObjectOwner);
+        });
+    }
 
     protected abstract getTableName(): string;
 
@@ -9,24 +18,27 @@ export abstract class AbsDao<M extends AbsModel> {
 
     protected abstract whereByPrimaryKey(queryBuilder: Knex.QueryBuilder, model: M): Knex.QueryBuilder;
 
-    public async insert(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
+    public async insert(tranObjectOwner: TranObjectOwner, model: M): Promise<number> {
+        const trx = tranObjectOwner.getTranObject() as Knex.Transaction<any, any[]>;
         const tableName = this.getTableName();
         return await trx.table(tableName).insert(model);
     }
 
-    public async update(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
+    public async update(tranObjectOwner: TranObjectOwner, model: M): Promise<number> {
+        const trx = tranObjectOwner.getTranObject() as Knex.Transaction<any, any[]>;
         const tableName = this.getTableName();
         return await trx.table(tableName).update(model);
     }
 
-    public async delete(trx: Knex.Transaction<any, any[]>, model: M): Promise<number> {
+    public async delete(tranObjectOwner: TranObjectOwner, model: M): Promise<number> {
+        const trx = tranObjectOwner.getTranObject() as Knex.Transaction<any, any[]>;
         const tableName = this.getTableName();
         const table = await this.whereByPrimaryKey(trx.table(tableName), model);
         return table.del();
     }
 
-    public async selectByPrimaryKey(knex: Knex, model: M): Promise<M | null> {
-        const queryBuilder = this.selectQueryBuilder(knex, model);
+    public async selectByPrimaryKey(model: M): Promise<M | null> {
+        const queryBuilder = this.selectQueryBuilder(model);
         const selected = await this.whereByPrimaryKey(queryBuilder, model);
         return selected.length > 0 ? selected[0] as M : null;
     }
@@ -85,26 +97,26 @@ export abstract class AbsDao<M extends AbsModel> {
         return queryBuilder;
     }
 
-    public async selectFirst(knex: Knex, model: AbsModel = {} as AbsModel)
+    public async selectFirst(model: AbsModel = {} as AbsModel)
         : Promise<M | null> {
-        const limitOne = await this.limit(knex, 1, model);
+        const limitOne = await this.limit(1, model);
         return limitOne.length > 0 ? limitOne[0] as M : null;
     }
 
-    public async selectList(knex: Knex, model: M)
+    public async selectList(model: M)
         : Promise<M[]> {
-        return await this.select(knex, model);
+        return await this.select(model);
     }
 
-    public limit(knex: Knex, limitCnt:number, model:AbsModel={} as AbsModel)
+    public limit(limitCnt:number, model:AbsModel={} as AbsModel)
         : Knex.QueryBuilder {
-        const qb = this.selectQueryBuilder(knex, model as M).limit(limitCnt);
+        const qb = this.selectQueryBuilder(model as M).limit(limitCnt);
         return qb;
     }
 
-    public async select(knex: Knex, model: M)
+    public async select(model: M)
         : Promise<Knex.QueryBuilder> {
-        let queryBuilder = this.selectQueryBuilder(knex, model);
+        let queryBuilder = this.selectQueryBuilder(model);
 
         // 페이징
         const page = model.pageInfo;
@@ -120,10 +132,10 @@ export abstract class AbsDao<M extends AbsModel> {
         return queryBuilder;
     }
 
-    public selectQueryBuilder(knex: Knex, model: M)
+    public selectQueryBuilder(model: M)
         : Knex.QueryBuilder {
         const tableName = this.getTableName();
-        let queryBuilder = knex.select().from<M>(tableName)
+        let queryBuilder = knexConnection.select().from<M>(tableName)
             .whereRaw('1=1');
 
         // 페이징
