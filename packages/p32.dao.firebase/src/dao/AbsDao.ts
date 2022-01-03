@@ -138,7 +138,7 @@ export abstract class AbsDao<M extends AbsIdBaseModel> {
     public async selectFirst(model: M)
         : Promise<M|null> {
 
-        const result = await this.select(model, [], true);
+        const result = await this.select(model, true);
         if ( result.length>0 ) {
             return result[0];
         } else {
@@ -150,16 +150,15 @@ export abstract class AbsDao<M extends AbsIdBaseModel> {
         return selected;
     }
 
-    public async selectList(model: M, preQueryConstraints: QueryConstraint[])
+    public async selectList(model: M)
         : Promise<M[]> {
-        return await this.select(model, preQueryConstraints, false);
+        return await this.select(model, false);
     }
 
     public async select(model: M
-        , preQueryConstraints: QueryConstraint[]
         , selectFirst:boolean)
         : Promise<M[]> {
-        const q = await this.createQuery(model, preQueryConstraints);
+        const q = await this.createQuery(model);
         const querySnapshot = await getDocs(q);
         const resultTmp = [] as M[];
         if ( selectFirst ) {
@@ -183,13 +182,13 @@ export abstract class AbsDao<M extends AbsIdBaseModel> {
         return result;
     }
 
-    private async createQuery(model: M, preQueryConstraints: QueryConstraint[])
+    private async createQuery(model: M)
         : Promise<Query<DocumentData>> {
 
         const queryConstraints = [] as QueryConstraint[];
-        if (SjDataUtil.isNotNullOrUndefined(preQueryConstraints) ) {
-            SjDataUtil.pushAll(queryConstraints, preQueryConstraints);
-        }
+        // if (SjDataUtil.isNotNullOrUndefined(preQueryConstraints) ) {
+        //     SjDataUtil.pushAll(queryConstraints, preQueryConstraints);
+        // }
         SjDataUtil.pushAll(queryConstraints, this.createWhereConditions(model));
         SjDataUtil.pushAll(queryConstraints, this.orderBy());
         SjDataUtil.pushAll(queryConstraints, this.groupBy());
