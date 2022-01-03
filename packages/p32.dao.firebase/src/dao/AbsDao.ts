@@ -1,8 +1,7 @@
-import { SjAssertUtil, SjDataUtil } from "@sejong/common";
+import { SjDataUtil } from "@sejong/common";
 import { AbsIdBaseModel } from "@sejong/model";
-import { PageInfo } from "@sejong/model/dist/PageInfo";
 import { initializeApp } from "firebase/app";
-import { collection, doc, DocumentData, Firestore, getDoc, getDocs, getFirestore, limit, Query, query, QueryConstraint, startAfter, WriteBatch } from "firebase/firestore/lite";
+import { collection, doc, DocumentData, DocumentSnapshot, getDoc, getDocs, getFirestore, limit, Query, query, QueryConstraint, startAfter, writeBatch, WriteBatch } from "firebase/firestore/lite";
 import { firebaseConfig } from "../FirebaseConfig";
 import { SequenceGenerator } from "./SequenceGenerator";
 
@@ -13,13 +12,15 @@ export abstract class AbsDao<M extends AbsIdBaseModel> {
 
     protected abstract getTableName(): string;
 
-    public abstract getCountColumn(): string;
+    public static createWriteBatch():WriteBatch {
+        return writeBatch(fireStore);
+    }
 
-    public async insert(db: Firestore, writeBatch: WriteBatch, model: M): Promise<WriteBatch> {
+    public async insert(writeBatch: WriteBatch, model: M): Promise<WriteBatch> {
 
         const tableName = this.getTableName();
-        const id = await SequenceGenerator.nextString(db, tableName);
-        const docRef = doc(db, tableName, id);
+        const id = await SequenceGenerator.nextString(fireStore, tableName);
+        const docRef = doc(fireStore, tableName, id);
         const modelTmp = model as any;
         delete modelTmp['id'];
         const wb = writeBatch.set(docRef, modelTmp);
@@ -28,25 +29,48 @@ export abstract class AbsDao<M extends AbsIdBaseModel> {
         return wb;
     }
 
-    public update(db: Firestore, writeBatch: WriteBatch, model: M): WriteBatch {
+    public update(writeBatch: WriteBatch, model: M): WriteBatch {
         const tableName = this.getTableName();
-        const docRef = doc(db, tableName, model.id);
+        const id = model.id;
+        const docRef = doc(fireStore, tableName, id);
         const modelTmp = model as any;
         delete modelTmp['id'];
-        return writeBatch.set(docRef, modelTmp, { merge: true });
+        const wb = writeBatch.set(docRef, modelTmp, { merge: true });
+        model.id = id;
+
+        return wb;
     }
 
-    public delete(db: Firestore, writeBatch: WriteBatch, model: M): WriteBatch {
+    public delete(writeBatch: WriteBatch, model: M): WriteBatch {
         const tableName = this.getTableName();
-        const docRef = doc(db, tableName, model.id);
+        const docRef = doc(fireStore, tableName, model.id);
         return writeBatch.delete(docRef);
     }
 
-    public async selectByPrimaryKey(db: Firestore, model: M): Promise<M | null> {
+    private convertDataToModel(snapshot:DocumentSnapshot<DocumentData>):M|null {
+        const data = snapshot.data();
+        if (SjDataUtil.isNotNullOrUndefined(data)) {
+            const model = data as M;
+            model.id = snapshot.id;
+            return model;
+        } else {
+            return null;
+        }
+    }
+
+    public async selectByPrimaryKey(model: M): Promise<M | null> {
         const tableName = this.getTableName();
-        const docRef = doc(db, tableName, model.id);
+        const docRef = doc(fireStore, tableName, model.id);
         const docSnapShot = await getDoc(docRef);
-        return docSnapShot.data() as M | null;
+        const resultTmp = [] as M[];
+        const modelResult = this.convertDataToModel(docSnapShot);
+        if (modelResult!= null ) {
+            resultTmp.push(modelResult);
+            const result = await this.joining(resultTmp);
+            return result[0];
+        } else {
+            return null;
+        }
     }
 
     protected createWhereConditions(model: M): QueryConstraint[] {
@@ -62,7 +86,7 @@ export abstract class AbsDao<M extends AbsIdBaseModel> {
         return [] as QueryConstraint[];
     }
 
-    private async paging(db: Firestore, model: M, queryConstantsWithoutPaging: QueryConstraint[])
+    private async paging(model: M, queryConstantsWithoutPaging: QueryConstraint[])
         : Promise<QueryConstraint[]> {
 
         const queryConstants = [] as QueryConstraint[];
@@ -72,18 +96,22 @@ export abstract class AbsDao<M extends AbsIdBaseModel> {
         }
 
         const tableName = this.getTableName();
-        const q = query(collection(db, tableName), ...queryConstantsWithoutPaging);
+        const q = query(collection(fireStore, tableName), ...queryConstantsWithoutPaging);
 
         const allSnapShot = await getDocs(q);
         const totalCount = allSnapShot.size;
 
         if (totalCount > 0) {
-            let rowStartPos = page.rowsPerPage * page.curPagePos;
-            if (totalCount < rowStartPos) {
-                const realPageCnt = (totalCount / page.rowsPerPage)
-                    + (totalCount % page.rowsPerPage) > 0 ? 1 : 0;
-                rowStartPos = page.rowsPerPage * (realPageCnt - 1);
-            }
+            const rowStartPosTmp = page.rowsPerPage * page.curPagePos;
+            const rowStartPos = (()=>{
+                if (totalCount < rowStartPosTmp) {
+                    const realPageCnt = (totalCount / page.rowsPerPage)
+                        + (totalCount % page.rowsPerPage) > 0 ? 1 : 0;
+                    return page.rowsPerPage * (realPageCnt - 1);
+                } else {
+                    return rowStartPosTmp;
+                }
+            })();
 
             if (rowStartPos > 0) {
                 const lastVisible = allSnapShot.docs[rowStartPos];
@@ -95,96 +123,70 @@ export abstract class AbsDao<M extends AbsIdBaseModel> {
         return queryConstants;
     }
 
-    // public async selectFirst(model: AbsModel = {} as AbsModel)
-    //     : Promise<M | null> {
-    //     const limitOne = await this.limit(knex, 1, model);
-    //     return limitOne.length > 0 ? limitOne[0] as M : null;
-    // }
+    public async selectFirst(model: M)
+        : Promise<M|null> {
 
-    // public limit(knex: Knex, limitCnt:number, model:AbsModel={} as AbsModel)
-    //     : Knex.QueryBuilder {
-    //     const qb = this.selectQueryBuilder(knex, model as M).limit(limitCnt);
-    //     return qb;
-    // }
-
-    public async selectList(model: M)
-        : Promise<M[]> {
-        return await this.select(fireStore, model);
+        const result = await this.select(model, [], true);
+        if ( result.length>0 ) {
+            return result[0];
+        } else {
+            return null;
+        }
     }
 
-    public async select(db: Firestore, model: M)
-        : Promise<M[]> {
-        const q = this.createQuery(db, model);
-        return null;
+    protected async joining(selected: M[]): Promise<M[]> {
+        return selected;
     }
 
-    private async createQuery(db: Firestore, model: M)
+    public async selectList(model: M, preQueryConstraints: QueryConstraint[])
+        : Promise<M[]> {
+        return await this.select(model, preQueryConstraints, false);
+    }
+
+    public async select(model: M
+        , preQueryConstraints: QueryConstraint[]
+        , selectFirst:boolean)
+        : Promise<M[]> {
+        const q = await this.createQuery(model, preQueryConstraints);
+        const querySnapshot = await getDocs(q);
+        const resultTmp = [] as M[];
+        if ( selectFirst ) {
+            if (querySnapshot.docs.length>0) {
+                const modelResult = this.convertDataToModel(querySnapshot.docs[0]);
+                if (modelResult != null ) {
+                    resultTmp.push(modelResult);
+                }
+            }
+        } else {
+            querySnapshot.forEach((doc) => {
+                const modelResult = this.convertDataToModel(doc);
+                if (modelResult != null) {
+                    resultTmp.push(modelResult);
+                }
+            });
+        }
+
+        const result = await this.joining(resultTmp);
+
+        return result;
+    }
+
+    private async createQuery(model: M, preQueryConstraints: QueryConstraint[])
         : Promise<Query<DocumentData>> {
 
         const queryConstraints = [] as QueryConstraint[];
+        if (SjDataUtil.isNotNullOrUndefined(preQueryConstraints) ) {
+            SjDataUtil.pushAll(queryConstraints, preQueryConstraints);
+        }
         SjDataUtil.pushAll(queryConstraints, this.createWhereConditions(model));
         SjDataUtil.pushAll(queryConstraints, this.orderBy());
         SjDataUtil.pushAll(queryConstraints, this.groupBy());
 
-        SjDataUtil.pushAll(queryConstraints, await this.paging(db, model, queryConstraints));
-        
+        // 페이징
+        SjDataUtil.pushAll(queryConstraints, await this.paging(model, queryConstraints));
 
         const tableName = this.getTableName();
-        const q = query(collection(db, tableName), ...queryConstraints);
+        const q = query(collection(fireStore, tableName), ...queryConstraints);
         return q;
-
-        // const allSnapShot = await getDocs(all);
-        // const allSnapShotSize = allSnapShot.size;
-        // console.log("allSnapShotSize => " + allSnapShotSize);
-
-        // // Query the first page of docs
-        // const firstPage = query(collection(db, "eazimemo_simple"), orderBy("message"), limit(limitCnt));
-        // const documentSnapshots = await getDocs(firstPage);
-
-        // // Get the last visible document
-        // const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-        // // console.log("last", lastVisible);
-
-        // // Construct a new query starting at this document,
-        // // get the next 25 cities.
-        // if (allSnapShotSize > limitCnt) {
-        //     const next = query(collection(db, "eazimemo_simple"),
-        //         orderBy("message"),
-        //         startAfter(lastVisible),
-        //         limit(limitCnt));
-        //     const nextSnapshots = await getDocs(next);
-
-        //     console.log("next ----> ");
-        //     nextSnapshots.forEach((doc) => {
-        //         console.log(doc.id, " => ", doc.data());
-        //     });
-        //     console.log("next ----> end");
-
-        // }
-        // console.log("pagingTest end");
-
-        // // const tableName = this.getTableName();
-        // let queryBuilder = knex.select().from<M>(tableName)
-        //     .whereRaw('1=1');
-
-        // // 페이징
-        // queryBuilder = this.fromTo(queryBuilder, model);
-
-        // // 조건절
-        // queryBuilder = this.where(queryBuilder, model);
-
-        // // 조인절
-        // queryBuilder = this.joining(queryBuilder);
-
-        // // orderBy
-        // queryBuilder = this.orderBy(queryBuilder);
-
-        // // groupBy
-        // queryBuilder = this.groupBy(queryBuilder);
-
-        // // selectColumns
-        // queryBuilder = this.selectColumns(queryBuilder);
-
-        // return queryBuilder;
     }
 }

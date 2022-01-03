@@ -1,8 +1,8 @@
 import { {{modelName}}Model } from "@sejong/model";
-import { AbsIdBaseDao } from "./AbsIdBaseDao";
+import { AbsDao } from "./AbsDao";
 
 // 자동생성된 코드
-export abstract class Abs{{modelName}}Dao extends AbsIdBaseDao<{{modelName}}Model> {
+export abstract class Abs{{modelName}}Dao extends AbsDao<{{modelName}}Model> {
 
     protected getTableName(): string {
         return "{{modelName}}";

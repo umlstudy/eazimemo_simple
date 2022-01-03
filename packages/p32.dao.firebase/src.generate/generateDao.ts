@@ -3,13 +3,14 @@ import { PROJECT_HOME } from '@sejong/dao';
 import * as fs from 'fs';
 
 // 실행
-// ts-node packages/p31.dao/src.generate/generateDao.ts
+// ts-node packages/p32.dao.firebase/src.generate/generateDao.ts
 
 // https://github.com/rmp135/sql-ts
 
+// generateAbsDao and generateDao
 export const generateDao = async (projectHome: string, tables: string[]): Promise<void> => {
 
-    const pkgLoc = `${projectHome}\\packages\\p31.dao`;
+    const pkgLoc = `${projectHome}\\packages\\p32.dao.firebase`;
     const daoLoc = pkgLoc + "\\src\\dao";
 
     const absTmplLoc = pkgLoc + "\\src.generate\\generateAbsDao.tmpl";
@@ -26,10 +27,14 @@ export const generateDao = async (projectHome: string, tables: string[]): Promis
         const pascalTableName = SjChangeCaseUtil.convertCase(table, 'pascal');
     
         const absConverted = SjTemplateUtil.convert(absTmplString, { modelName: pascalTableName});
-        fs.writeFileSync(daoLoc + "//Abs" + pascalTableName + "Dao.ts", absConverted);
-    
+        const absDaoFileName = daoLoc + "//Abs" + pascalTableName + "Dao.ts";
+        fs.writeFileSync(absDaoFileName, absConverted);
+        console.log(absDaoFileName + ' created...');
+
+        const daoFileName = daoLoc + "//" + pascalTableName + "Dao.ts";
         const converted = SjTemplateUtil.convert(tmplString, { modelName: pascalTableName });
-        fs.writeFileSync(daoLoc + "//" + pascalTableName + "Dao.ts", converted);
+        fs.writeFileSync(daoFileName, converted);
+        console.log(daoFileName + ' created...');
 
         const exportStr = `export { ${pascalTableName}Dao } from \"./dao/${pascalTableName}Dao\";`;
         exportClasses.push(exportStr);

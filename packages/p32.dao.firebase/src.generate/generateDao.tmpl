@@ -1,7 +1,13 @@
+import { {{modelName}}Model } from "@sejong/model";
 import { Abs{{modelName}}Dao } from "./Abs{{modelName}}Dao";
 
-// 자동생성된 코드
 export class {{modelName}}Dao extends Abs{{modelName}}Dao {
 
+    // 자동생성된 코드 시작
     public static readonly INS = new {{modelName}}Dao();
+
+    protected async joining(selected: {{modelName}}Model[]): Promise<{{modelName}}Model[]> {
+        return selected;
+    }
+    // 자동생성된 코드 끝
 }
