@@ -5,6 +5,6 @@ import { AbsIdBaseDao } from "./AbsIdBaseDao";
 export abstract class AbsUserDao extends AbsIdBaseDao<UserModel> {
 
     protected getTableName(): string {
-        return "User";
+        return "user";
     }
 }

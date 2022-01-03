@@ -25,8 +25,12 @@ export const generateDao = async (projectHome: string, tables: string[]): Promis
         const table = tables[i];
 
         const pascalTableName = SjChangeCaseUtil.convertCase(table, 'pascal');
-    
-        const absConverted = SjTemplateUtil.convert(absTmplString, { modelName: pascalTableName});
+        const snakeTableName = SjChangeCaseUtil.convertCase(table, 'snake');
+
+        const absConverted = SjTemplateUtil.convert(absTmplString, {
+            modelName: pascalTableName,
+            snakeTableName: snakeTableName
+        });
         const absDaoFileName = daoLoc + "//Abs" + pascalTableName + "Dao.ts";
         fs.writeFileSync(absDaoFileName, absConverted);
         console.log(absDaoFileName + ' created...');
