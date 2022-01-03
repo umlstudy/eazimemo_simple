@@ -1,7 +1,7 @@
 import { SjDataUtil } from "@sejong/common";
-import { AbsIdBaseModel } from "@sejong/model";
+import { AbsIdBaseModel, TranObjectOwner } from "@sejong/model";
 import { initializeApp } from "firebase/app";
-import { collection, doc, DocumentData, DocumentSnapshot, getDoc, getDocs, getFirestore, limit, Query, query, QueryConstraint, startAfter, writeBatch, WriteBatch } from "firebase/firestore/lite";
+import { collection, doc, DocumentData, DocumentSnapshot, getDoc, getDocs, getFirestore, limit, Query, query, QueryConstraint, runTransaction, startAfter, Transaction } from "firebase/firestore/lite";
 import { firebaseConfig } from "../FirebaseConfig";
 import { SequenceGenerator } from "./SequenceGenerator";
 
@@ -12,39 +12,51 @@ export abstract class AbsDao<M extends AbsIdBaseModel> {
 
     protected abstract getTableName(): string;
 
-    public static createWriteBatch():WriteBatch {
-        return writeBatch(fireStore);
+    public static async transaction(codePart: (tranObjectOwner: TranObjectOwner)=>Promise<void>)
+        :Promise<void> {
+
+        await runTransaction(fireStore, async (transaction) => {
+            const tranObjectOwner = new TranObjectOwner(transaction);
+            await codePart(tranObjectOwner);
+        });
     }
 
-    public async insert(writeBatch: WriteBatch, model: M): Promise<WriteBatch> {
-
+    public async insert(tranObjectOwner: TranObjectOwner , model: M): Promise<M> {
+        const transaction = tranObjectOwner.getTranObject() as Transaction;
         const tableName = this.getTableName();
         const id = await SequenceGenerator.nextString(fireStore, tableName);
         const docRef = doc(fireStore, tableName, id);
         const modelTmp = model as any;
         delete modelTmp['id'];
-        const wb = writeBatch.set(docRef, modelTmp);
+        transaction.set(docRef, modelTmp);
         model.id = id;
-
-        return wb;
+        return model;
     }
 
-    public update(writeBatch: WriteBatch, model: M): WriteBatch {
+    public async update(tranObjectOwner: TranObjectOwner, model: M): Promise<number> {
+        const transaction = tranObjectOwner.getTranObject() as Transaction;
         const tableName = this.getTableName();
         const id = model.id;
+
         const docRef = doc(fireStore, tableName, id);
+        const sfDoc = await transaction.get(docRef);
+        if (!sfDoc.exists()) {
+            throw "Document does not exist!";
+        }
         const modelTmp = model as any;
         delete modelTmp['id'];
-        const wb = writeBatch.set(docRef, modelTmp, { merge: true });
+        transaction.update(docRef, modelTmp, { merge: true });
         model.id = id;
 
-        return wb;
+        return 1;
     }
 
-    public delete(writeBatch: WriteBatch, model: M): WriteBatch {
+    public delete(tranObjectOwner: TranObjectOwner, model: M): number {
+        const transaction = tranObjectOwner.getTranObject() as Transaction;
         const tableName = this.getTableName();
         const docRef = doc(fireStore, tableName, model.id);
-        return writeBatch.delete(docRef);
+        transaction.delete(docRef);
+        return 1;
     }
 
     private convertDataToModel(snapshot:DocumentSnapshot<DocumentData>):M|null {

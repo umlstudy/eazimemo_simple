@@ -1,4 +1,4 @@
-import { MemoModel } from "@sejong/model";
+import { MemoModel, TranObjectOwner } from "@sejong/model";
 import { AbsDao } from "..";
 import { MemoDao } from "./MemoDao";
 
@@ -8,16 +8,16 @@ async function main() {
 
   const memoDao = MemoDao.INS;
   try {
-    const batch = AbsDao.createWriteBatch();
-    await (await memoDao.insert(batch, memo)).commit();
-    console.log("삽입결과");
-    console.log(memo);
-    const selMemo = await memoDao.selectByPrimaryKey(memo).catch(e=>{
-      console.log("eeeeeeeee");
-      console.log(e)}
-      );
+    const func = async (too:TranObjectOwner) => {
+      await memoDao.insert(too, memo);
+      console.log("삽입결과");
+      console.log(memo);
+    }
+    await AbsDao.transaction(func);
+    const selMemo = await memoDao.selectByPrimaryKey(memo);
     console.log("입력 결과");
     console.log(selMemo);
+
   } catch ( e ) {
     console.log(e);
   }

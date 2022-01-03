@@ -86,14 +86,15 @@ async function incrementTest() {
 
 async function transactionTest1() {
     // docRef 등은 트랜젝션 외부에서?
-    const docRef = doc(db, 'eazimemo_simple', 'memo');
     try {
         await runTransaction(db, async (transaction) => {
+            const docRef = doc(db, 'eazimemo_simple', 'memo');
             const sfDoc = await transaction.get(docRef);
             if (!sfDoc.exists()) {
                 throw "Document does not exist!";
             }
 
+            console.log(sfDoc.data().population);
             const newPopulation = sfDoc.data().population + 1;
             transaction.update(docRef, { population: newPopulation });
         });
@@ -190,7 +191,7 @@ async function main() {
         await batchTest();
     }
 
-    const runPagingTest = true;
+    const runPagingTest = false;
     if (runPagingTest) {
         await pagingTest();
     }
@@ -200,7 +201,7 @@ async function main() {
         await conditionSelectTest();
     }
 
-    const runTransactionTest = false;
+    const runTransactionTest = true;
     if (runTransactionTest) {
         await transactionTest1();
     }
