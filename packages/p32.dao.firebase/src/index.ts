@@ -12,5 +12,5 @@ export { UserDao } from "./dao/UserDao";
 
 
 // 빌드
-// cd packages/p32.dao.firebase;tsc;yarn install;cd ../..
+// cd packages/p32.dao.firebase;rm -rf dist;tsc;yarn install;cd ../..
 

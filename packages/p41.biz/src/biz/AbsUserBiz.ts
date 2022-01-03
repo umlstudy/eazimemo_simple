@@ -1,4 +1,4 @@
-import { UserDao } from "@sejong/dao";
+import { UserDao } from "@sejong/dao.firebase";
 import { UserModel } from "@sejong/model";
 import { AbsBiz } from "./AbsBiz";
 

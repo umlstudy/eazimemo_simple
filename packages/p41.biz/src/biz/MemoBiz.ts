@@ -1,5 +1,5 @@
 import { SjAssertUtil } from "@sejong/common";
-import { AbsDao, MemoDao } from "@sejong/dao";
+import { AbsDao, MemoDao } from "@sejong/dao.firebase";
 import { MemoModel, TranObjectOwner } from "@sejong/model";
 import { AbsMemoBiz } from "./AbsMemoBiz";
 

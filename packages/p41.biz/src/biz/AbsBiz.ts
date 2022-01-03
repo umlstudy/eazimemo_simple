@@ -1,4 +1,4 @@
-import { AbsDao } from "@sejong/dao";
+import { AbsDao } from "@sejong/dao.firebase";
 import { AbsModel, TranObjectOwner } from "@sejong/model";
 
 export abstract class AbsBiz<M extends AbsModel> {
@@ -10,7 +10,8 @@ export abstract class AbsBiz<M extends AbsModel> {
     }
 
     public async selectFirst(): Promise<M | null> {
-        return this.getAbsDao().selectFirst();
+        //return this.getAbsDao().selectFirst();
+        return this.getAbsDao().selectFirst({} as M);
     }
 
     protected abstract validate4Insert(model: M):void;

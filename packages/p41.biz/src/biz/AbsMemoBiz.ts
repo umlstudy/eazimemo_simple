@@ -1,4 +1,4 @@
-import { MemoDao } from "@sejong/dao";
+import { MemoDao } from "@sejong/dao.firebase";
 import { MemoModel } from "@sejong/model";
 import { AbsBiz } from "./AbsBiz";
 
