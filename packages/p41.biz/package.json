@@ -10,7 +10,7 @@
   "dependencies": {
     "@sejong/common": "^1.0.0",
     "@sejong/model": "^1.0.0",
-    "@sejong/dao": "^1.0.0"
+    "@sejong/dao.firebase": "^1.0.0"
   },
   "scripts": {
     "build": "tsc",
