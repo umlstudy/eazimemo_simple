@@ -10,13 +10,16 @@ export abstract class AbsDao<M extends AbsModel> {
 
     protected abstract getTableName(): string;
 
-    public static async transaction(codePart: (tranObjectOwner: TranObjectOwner)=>Promise<void>)
-        :Promise<void> {
+    public static async transaction(
+        codePart: (tranObjectOwner: TranObjectOwner)=>Promise<any>)
+        : Promise<any> {
 
-        await runTransaction(fireStore, async (transaction) => {
+        const result = await runTransaction(fireStore, async (transaction) => {
             const tranObjectOwner = new TranObjectOwner(transaction);
             await codePart(tranObjectOwner);
         });
+
+        return result;
     }
 
     protected static getFireStore():Firestore {

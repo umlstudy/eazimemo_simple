@@ -1,6 +1,7 @@
 
 import { MemoBiz } from "@sejong/biz";
-import { knexConnection } from "@sejong/dao";
+import { AbsDao } from "@sejong/dao.firebase";
+import { TranObjectOwner } from "@sejong/model";
 
 // 자동 생성된 코드
 
@@ -19,14 +20,15 @@ export const GenMemoResolver = {
 const getMemoByPrimaryKey = async (root: any, args: any) => {
   console.log(root);
   const { memo } = args;
-  return await MemoBiz.INS.getMemoByPrimaryKey(knexConnection, memo);
+  return await MemoBiz.INS.getMemoByPrimaryKey(memo);
 }
 
 const addMemo = async (root: any, args: any) => {
   console.log(root);
   const { memo } = args;
-  const result = await knexConnection.transaction(async trx => {
-    const memoAdded = await MemoBiz.INS.addMemo(trx, memo);
+  const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
+    const memoAdded = await MemoBiz.INS.addMemo(too, memo);
+
     return memoAdded;
   });
   return result;

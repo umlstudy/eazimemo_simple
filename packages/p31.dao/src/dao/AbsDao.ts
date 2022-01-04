@@ -4,12 +4,14 @@ import { knexConnection } from "../KnexConfig";
 
 export abstract class AbsDao<M extends AbsModel> {
 
-    public static async transaction(codePart: (tranObjectOwner: TranObjectOwner) => Promise<void>)
-        : Promise<void> {
-        knexConnection.transaction(async trx => {
+    public static async transaction(
+        codePart: (tranObjectOwner: TranObjectOwner) => Promise<any>)
+        : Promise<any> {
+        const result = knexConnection.transaction(async trx => {
             const tranObjectOwner = new TranObjectOwner(trx);
             await codePart(tranObjectOwner);
         });
+        return result;
     }
 
     protected abstract getTableName(): string;
