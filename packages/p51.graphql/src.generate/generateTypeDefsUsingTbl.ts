@@ -1,5 +1,6 @@
 import { SjChangeCaseUtil, SjTemplateUtil } from '@sejong/common';
-import { knexConnection, PROJECT_HOME, SjKnexSchemaUtil } from '@sejong/dao';
+import { PROJECT_HOME, SjKnexSchemaUtil } from '@sejong/dao';
+import { knexConnection } from '../../p31.dao/src/KnexConfig';
 import { ColumnInfo } from '@sejong/model';
 import * as fs from 'fs';
 

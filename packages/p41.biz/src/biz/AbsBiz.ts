@@ -17,11 +17,16 @@ export abstract class AbsBiz<M extends AbsModel> {
     protected abstract validate4Insert(model: M):void;
 
     public async insert(too: TranObjectOwner, model: M): Promise<number> {
+        const now = new Date();
+        model.createdAt = now;
+        model.updatedAt = now;
         this.validate4Insert(model);
         return await this.getAbsDao().insert(too, model);
     }
 
     public async update(too: TranObjectOwner, model: M): Promise<number> {
+        const now = new Date();
+        model.updatedAt = now;
         return await this.getAbsDao().update(too, model);
     }
 

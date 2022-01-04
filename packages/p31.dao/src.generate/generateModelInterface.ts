@@ -1,5 +1,6 @@
 import { SjChangeCaseUtil, SjTemplateUtil } from '@sejong/common';
-import { knexConnection, PROJECT_HOME, SjKnexSchemaUtil } from '@sejong/dao';
+import { PROJECT_HOME, SjKnexSchemaUtil } from '@sejong/dao';
+import { knexConnection } from '../src/KnexConfig';
 import { ColumnInfo } from '@sejong/model';
 import * as fs from 'fs';
 
@@ -29,6 +30,13 @@ export const generateModelInterface = async (projectHome: string, tables: string
         for (const key in columnsTmp) {
             const typeStr = columnsTmp[key];
             const camelColumnName = SjChangeCaseUtil.convertCase(key, 'camel');
+            if (camelColumnName === 'createdAt' 
+                || camelColumnName === 'updatedAt'
+                || camelColumnName === 'creatorEmail'
+                || camelColumnName === 'updaterEmail'
+             ) {
+                 continue;
+            }
             const col = {
                 columnName: camelColumnName,
                 columnType: typeStr
