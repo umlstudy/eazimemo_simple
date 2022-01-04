@@ -28,7 +28,6 @@ const addMemo = async (root: any, args: any) => {
   const { memo } = args;
   const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
     const memoAdded = await MemoBiz.INS.addMemo(too, memo);
-
     return memoAdded;
   });
   return result;
@@ -37,8 +36,8 @@ const addMemo = async (root: any, args: any) => {
 const removeMemo = async (root: any, args: any) => {
   console.log(root);
   const { memo } = args;
-  const result = await knexConnection.transaction(async trx => {
-    const memoRemoved = await MemoBiz.INS.removeMemo(trx, memo);
+  const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
+    const memoRemoved = await MemoBiz.INS.removeMemo(too, memo);
     return memoRemoved;
   });
   return result;
@@ -47,8 +46,8 @@ const removeMemo = async (root: any, args: any) => {
 const updateMemo = async (root: any, args: any) => {
   console.log(root);
   const { memo } = args;
-  const result = await knexConnection.transaction(async trx => {
-    const memoUpdated = await MemoBiz.INS.updateMemo(trx, memo);
+  const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
+    const memoUpdated = await MemoBiz.INS.updateMemo(too, memo);
     return memoUpdated;
   });
   return result;

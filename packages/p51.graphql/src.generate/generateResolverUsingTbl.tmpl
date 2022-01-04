@@ -1,6 +1,7 @@
 
 import { {{pascalModelName}}Biz } from "@sejong/biz";
-import { knexConnection } from "@sejong/dao";
+import { AbsDao } from "@sejong/dao.firebase";
+import { TranObjectOwner } from "@sejong/model";
 
 // 자동 생성된 코드
 
@@ -19,14 +20,14 @@ export const Gen{{pascalModelName}}Resolver = {
 const get{{pascalModelName}}ByPrimaryKey = async (root: any, args: any) => {
   console.log(root);
   const { {{camelModelName}} } = args;
-  return await {{pascalModelName}}Biz.INS.get{{pascalModelName}}ByPrimaryKey(knexConnection, {{camelModelName}});
+  return await {{pascalModelName}}Biz.INS.get{{pascalModelName}}ByPrimaryKey({{camelModelName}});
 }
 
 const add{{pascalModelName}} = async (root: any, args: any) => {
   console.log(root);
   const { {{camelModelName}} } = args;
-  const result = await knexConnection.transaction(async trx => {
-    const {{camelModelName}}Added = await {{pascalModelName}}Biz.INS.add{{pascalModelName}}(trx, {{camelModelName}});
+  const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
+    const {{camelModelName}}Added = await {{pascalModelName}}Biz.INS.add{{pascalModelName}}(too, {{camelModelName}});
     return {{camelModelName}}Added;
   });
   return result;
@@ -35,8 +36,8 @@ const add{{pascalModelName}} = async (root: any, args: any) => {
 const remove{{pascalModelName}} = async (root: any, args: any) => {
   console.log(root);
   const { {{camelModelName}} } = args;
-  const result = await knexConnection.transaction(async trx => {
-    const {{camelModelName}}Removed = await {{pascalModelName}}Biz.INS.remove{{pascalModelName}}(trx, {{camelModelName}});
+  const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
+    const {{camelModelName}}Removed = await {{pascalModelName}}Biz.INS.remove{{pascalModelName}}(too, {{camelModelName}});
     return {{camelModelName}}Removed;
   });
   return result;
@@ -45,8 +46,8 @@ const remove{{pascalModelName}} = async (root: any, args: any) => {
 const update{{pascalModelName}} = async (root: any, args: any) => {
   console.log(root);
   const { {{camelModelName}} } = args;
-  const result = await knexConnection.transaction(async trx => {
-    const {{camelModelName}}Updated = await {{pascalModelName}}Biz.INS.update{{pascalModelName}}(trx, {{camelModelName}});
+  const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
+    const {{camelModelName}}Updated = await {{pascalModelName}}Biz.INS.update{{pascalModelName}}(too, {{camelModelName}});
     return {{camelModelName}}Updated;
   });
   return result;

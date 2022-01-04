@@ -1,6 +1,7 @@
 
 import { UserBiz } from "@sejong/biz";
-import { knexConnection } from "@sejong/dao";
+import { AbsDao } from "@sejong/dao.firebase";
+import { TranObjectOwner } from "@sejong/model";
 
 // 자동 생성된 코드
 
@@ -19,14 +20,14 @@ export const GenUserResolver = {
 const getUserByPrimaryKey = async (root: any, args: any) => {
   console.log(root);
   const { user } = args;
-  return await UserBiz.INS.getUserByPrimaryKey(knexConnection, user);
+  return await UserBiz.INS.getUserByPrimaryKey(user);
 }
 
 const addUser = async (root: any, args: any) => {
   console.log(root);
   const { user } = args;
-  const result = await knexConnection.transaction(async trx => {
-    const userAdded = await UserBiz.INS.addUser(trx, user);
+  const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
+    const userAdded = await UserBiz.INS.addUser(too, user);
     return userAdded;
   });
   return result;
@@ -35,8 +36,8 @@ const addUser = async (root: any, args: any) => {
 const removeUser = async (root: any, args: any) => {
   console.log(root);
   const { user } = args;
-  const result = await knexConnection.transaction(async trx => {
-    const userRemoved = await UserBiz.INS.removeUser(trx, user);
+  const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
+    const userRemoved = await UserBiz.INS.removeUser(too, user);
     return userRemoved;
   });
   return result;
@@ -45,8 +46,8 @@ const removeUser = async (root: any, args: any) => {
 const updateUser = async (root: any, args: any) => {
   console.log(root);
   const { user } = args;
-  const result = await knexConnection.transaction(async trx => {
-    const userUpdated = await UserBiz.INS.updateUser(trx, user);
+  const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
+    const userUpdated = await UserBiz.INS.updateUser(too, user);
     return userUpdated;
   });
   return result;
