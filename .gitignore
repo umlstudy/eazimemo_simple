@@ -6,6 +6,8 @@
 *.sqlite_
 *.d.ts
 
+build/
+
 # Logs
 logs
 *.log

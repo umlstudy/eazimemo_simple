@@ -6,7 +6,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rmp135/sql-ts": "^1.12.1",
     "@sejong/biz": "^1.0.0",
     "@sejong/common": "^1.0.0",
     "@sejong/model": "^1.0.0",
@@ -15,6 +14,7 @@
     "graphql": "^16.0.1"
   },
   "devDependencies": {
+    "@rmp135/sql-ts": "^1.12.1",
     "graphql-request": "^3.7.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.2"
