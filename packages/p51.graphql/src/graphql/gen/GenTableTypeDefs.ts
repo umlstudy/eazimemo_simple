@@ -6,16 +6,18 @@ export const GenTableTypeDefs = gql`
   # Memo
   #
   type Memo {
-    memoId: Int
+    id: String
     message: String
-    email: String
+    creatorEmail: String
+    updaterEmail: String
     createdAt: Int
     updatedAt: Int
   }
   input MemoInput {
-    memoId: Int
+    id: String
     message: String
-    email: String
+    creatorEmail: String
+    updaterEmail: String
     createdAt: Int
     updatedAt: Int
   }
@@ -32,14 +34,14 @@ export const GenTableTypeDefs = gql`
   # User
   #
   type User {
-    userId: Int
+    id: String
     email: String
     name: String
     createdAt: Int
     updatedAt: Int
   }
   input UserInput {
-    userId: Int
+    id: String
     email: String
     name: String
     createdAt: Int

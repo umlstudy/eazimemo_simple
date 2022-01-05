@@ -1,4 +1,4 @@
-import { SjDataUtil } from "@sejong/common";
+import { SjDataUtil, SjLogUtil } from "@sejong/common";
 import { AbsIdBaseModel, TranObjectOwner } from "@sejong/model";
 import { collection, doc, DocumentData, DocumentSnapshot, getDoc, getDocs, limit, Query, query, QueryConstraint, startAfter, Transaction } from "firebase/firestore/lite";
 import { AbsDao } from "./AbsDao";
@@ -58,7 +58,9 @@ export abstract class AbsIdBaseDao<M extends AbsIdBaseModel> extends AbsDao<M> {
 
     public async selectByPrimaryKey(model: M): Promise<M | null> {
         const tableName = this.getTableName();
-        const docRef = doc(AbsDao.getFireStore(), tableName, model.id);
+        SjLogUtil.debug("AbsIdBaseDao.selectByPrimaryKey");
+        const fireStore = AbsDao.getFireStore();
+        const docRef = doc(fireStore, tableName, model.id);
         const docSnapShot = await getDoc(docRef);
         const resultTmp = [] as M[];
         const modelResult = this.convertDataToModel(docSnapShot);

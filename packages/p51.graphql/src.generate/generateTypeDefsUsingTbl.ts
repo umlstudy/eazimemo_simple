@@ -31,7 +31,7 @@ export const generateTypeDefsUsingTbl = async (projectHome: string, tables: stri
             const camelColumnName = SjChangeCaseUtil.convertCase(key, 'camel');
             const col = {
                 columnName: camelColumnName,
-                columnType: typeStr
+                columnType: camelColumnName === 'id' ? 'String' : typeStr
             } as ColumnInfo;
             columns.push(col);
         }
