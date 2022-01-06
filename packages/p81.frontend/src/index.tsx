@@ -5,7 +5,7 @@ import './index.css';
 
 // cd packages/p81.frontend;rm -rf dist;yarn install;tsc;cd ../..
 
-// cd packages/p81.frontend;rm -rf dist;tsc;cd ../..
+// cd packages/p81.frontend;rm -rf dist;tsc;yarn install;cd ../..
 
 // cd packages/p81.frontend;yarn start;cd ../..
 ReactDOM.render(

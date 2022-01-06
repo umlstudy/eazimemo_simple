@@ -2,7 +2,6 @@ import {
   ApolloClient, ApolloProvider, InMemoryCache
 } from "@apollo/client";
 import { ReactElement } from 'react';
-import DocPhoto from './DocPhoto';
 
 const client = new ApolloClient({
   uri: 'https://48p1r2roz4.sse.codesandbox.io',
@@ -13,7 +12,7 @@ const client = new ApolloClient({
 function App():ReactElement {
   return (
     <ApolloProvider client={client}>
-      <DocPhoto breed='aaa'/>
+      <div>hello</div>
     </ApolloProvider>
   );
 }
