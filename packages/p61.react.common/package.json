@@ -1,0 +1,15 @@
+{
+  "name": "@sejong/react.common",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.2.7",
+    "@sejong/common": "^1.0.0"
+  },
+  "devDependencies": {}
+}
