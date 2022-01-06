@@ -1,9 +1,7 @@
-import { ReactElement } from 'react';
 import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider
+  ApolloClient, ApolloProvider, InMemoryCache
 } from "@apollo/client";
+import { ReactElement } from 'react';
 import DocPhoto from './DocPhoto';
 
 const client = new ApolloClient({

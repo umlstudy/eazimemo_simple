@@ -2,6 +2,7 @@ import {
   useQuery,
   gql
 } from "@apollo/client";
+import { ReactElement } from "react";
 
 const GET_DOG_PHOTO = gql`
   query Dog($breed: String!) {
@@ -12,9 +13,13 @@ const GET_DOG_PHOTO = gql`
   }
 `;
 
-const DocPhoto=({ breed }:any):any => {
+interface DocPhotoProps {
+  breed: string;
+}
+
+const DocPhoto = (props: DocPhotoProps): ReactElement | null | string => {
     const { loading, error, data } = useQuery(GET_DOG_PHOTO, {
-        variables: { breed },
+      variables: { breed:props.breed },
     });
 
     if (loading) return null;

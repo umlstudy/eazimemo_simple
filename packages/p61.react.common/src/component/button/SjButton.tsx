@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { AbsComponent } from "../AbsComponent";
 
-class SjText extends AbsComponent {
+export class SjButton extends AbsComponent {
 
     private buttonName: string;
 
@@ -16,5 +16,3 @@ class SjText extends AbsComponent {
         </Button>);
     }
 }
-
-export default SjText;

@@ -9,6 +9,8 @@
     "@apollo/client": "^3.5.6",
     "@sejong/common": "^1.0.0",
     "@sejong/model": "^1.0.0",
+    "@sejong/react.common": "^1.0.0",
+    "@sejong/frontend.biz": "^1.0.0",
     "bootstrap": "^4.5.3",
     "graphql": "^16.2.0",
     "react": "^17.0.1",
