@@ -1,6 +1,5 @@
 import {
-  useQuery,
-  gql
+  gql, useQuery
 } from "@apollo/client";
 import { ReactElement } from "react";
 

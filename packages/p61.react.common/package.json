@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/material": "^5.2.7",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "@sejong/common": "^1.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8"
+  }
 }
