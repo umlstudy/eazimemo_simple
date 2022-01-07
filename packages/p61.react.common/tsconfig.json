@@ -19,6 +19,7 @@
     "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
     "noFallthroughCasesInSwitch": true, // 추가
     "module": "esnext", //무슨 import 문법 쓸건지 'commonjs', 'amd', 'es2015', 'esnext'
+    //"module":"CommonJS",
     "moduleResolution": "node", // 추가 => import 모듈 해석 방법
     "resolveJsonModule": true, // 추가 => Json파일 모듈로 가져오기
     "isolatedModules": true, // 추가
