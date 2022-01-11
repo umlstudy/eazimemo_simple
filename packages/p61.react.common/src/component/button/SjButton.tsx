@@ -13,6 +13,7 @@ export default class SjButton extends AbsComponent {
     constructor(props: SjButtonProp) {
         super(props);
         this.buttonLabel = props.children;
+        console.log("버튼 테스트중 props = >" + props)
         console.log("버튼 테스트중 const = >" + this.buttonLabel)
     }
 
