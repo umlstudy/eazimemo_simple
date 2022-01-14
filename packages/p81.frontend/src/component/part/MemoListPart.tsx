@@ -1,12 +1,27 @@
 import { SjLogUtil } from "@sejong/common";
+import { request } from "graphql-request";
 import { ReactElement, useEffect, useState } from "react";
+import { ErrorPart } from "./ErrorPart";
 
-const enum NetworkStatus { READY, LOADING, LOADING_OK, LOADING_ERROR }
+// const enum NetworkStatus { READY, LOADING, LOADING_OK, LOADING_ERROR }
+
+const endpoint = "http://localhost:5000/graphql";
+const query = `{
+  getMemoByPrimaryKey(memo: {id:"20"}) {
+    message
+  }
+}`;
+
+interface Bean {
+    object?:unknown;
+    error?:Error;
+    isLoading:boolean;
+}
 
 export const MemoListPart = (): ReactElement => {
 
     // state
-    const [networkStatus, setNetworkStatus] = useState(NetworkStatus.LOADING);
+    const [bean, setBean] = useState({isLoading:true} as Bean);
 
     // effect => componentDidMount/DidUpdate
     // https://xiubindev.tistory.com/100
@@ -18,7 +33,14 @@ export const MemoListPart = (): ReactElement => {
     useEffect(() => {
         // effect
         SjLogUtil.debug("MemoListPart useEffect -> effect");
-        setTimeout(() => { setNetworkStatus(NetworkStatus.LOADING_OK) }, 2000);
+        request(endpoint, query).then((data: unknown) =>{
+            SjLogUtil.debug("success request!!!");
+            console.log(JSON.stringify(data, null, 2));
+            setBean({ isLoading: false, object:data } as Bean);
+        }).catch(e=>{
+            console.log(e.toString());
+            setBean({ isLoading: false, error: e } as Bean);
+        });
         return () => {
             // cleanup
             SjLogUtil.debug("MemoListPart useEffect -> cleanup");
@@ -30,11 +52,12 @@ export const MemoListPart = (): ReactElement => {
 
 
     const html = () => {
-        switch (networkStatus) {
-            case NetworkStatus.LOADING: return <div>Loading...</div>;
-            case NetworkStatus.READY: return <div>Ready...</div>;
-            case NetworkStatus.LOADING_OK: return <div>LoadingOk...</div>;
-            case NetworkStatus.LOADING_ERROR: return <div>LoadingERROR...</div>;
+        if ( bean.isLoading ) {
+            return <div>Loading...</div>;
+        } else if ( bean.error ) {
+            return <ErrorPart error={bean.error}/>;
+        } else {
+            return <div>LoadingOk... {JSON.stringify(bean.object, null, 2)}</div>;
         }
     };
 
