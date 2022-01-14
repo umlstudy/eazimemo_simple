@@ -1,11 +1,12 @@
 import { Button } from "@mui/material";
 import * as React from 'react';
 import { ReactElement } from "react";
-import { AbsComponent } from "../AbsComponent";
+import { AbsComponent } from "../../AbsComponent";
 
 interface SjButtonProp {
     children: string;
 }
+
 export default class SjButton extends AbsComponent {
 
     private buttonLabel: string;

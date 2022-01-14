@@ -4,6 +4,7 @@ import {
 import { Button } from "@mui/material";
 import { SjButton, SjButton2 } from "@sejong/react.common";
 import { ReactElement } from 'react';
+import MemoListPage from "./component/page/MemoListPage";
 import SjButton3 from "./SjButton3";
 
 const client = new ApolloClient({
@@ -22,6 +23,7 @@ function App():ReactElement {
       <SjButton3/>
       <SjButton2/>
       <SjButton>김김용용</SjButton>
+      <MemoListPage></MemoListPage>
     </ApolloProvider>
   );
 }
