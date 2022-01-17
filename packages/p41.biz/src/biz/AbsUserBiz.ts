@@ -1,6 +1,6 @@
 import { SjAssertUtil } from "@sejong/common";
 import { AbsDao, UserDao } from "@sejong/dao.firebase";
-import { UserModel, TranObjectOwner } from "@sejong/model";
+import { UserListModel, UserModel, TranObjectOwner } from "@sejong/model";
 import { AbsBiz } from "./AbsBiz";
 
 export abstract class AbsUserBiz extends AbsBiz<UserModel> {
@@ -22,7 +22,7 @@ export abstract class AbsUserBiz extends AbsBiz<UserModel> {
         return result;
     }
     
-    public async getUserList(model: UserModel): Promise<UserModel[]> {
+    public async getUserList(model: UserModel): Promise<UserListModel> {
         const result = await this.selectList(model);
         return result;
     }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 /* tslint:disable await-promise */
 
 import { SjLogUtil } from '@sejong/common';
@@ -11,6 +12,7 @@ import { knexConnection } from '../src/KnexConfig';
 // https://www.daleseo.com/js-dotenv/
 // https://github.com/bkonkle/node-knex-typescript-example/blob/master/src/utils/MigrationUtils.ts
 
+// eslint-disable-next-line @typescript-eslint/prefer-namespace-keyword
 module DbInitializer {
 
     // user.user_name 추가

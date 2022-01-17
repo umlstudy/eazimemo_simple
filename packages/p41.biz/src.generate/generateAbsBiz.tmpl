@@ -1,6 +1,6 @@
 import { SjAssertUtil } from "@sejong/common";
 import { AbsDao, {{pascalModelName}}Dao } from "@sejong/dao.firebase";
-import { {{pascalModelName}}Model, TranObjectOwner } from "@sejong/model";
+import { {{pascalModelName}}ListModel, {{pascalModelName}}Model, TranObjectOwner } from "@sejong/model";
 import { AbsBiz } from "./AbsBiz";
 
 export abstract class Abs{{pascalModelName}}Biz extends AbsBiz<{{pascalModelName}}Model> {
@@ -22,7 +22,7 @@ export abstract class Abs{{pascalModelName}}Biz extends AbsBiz<{{pascalModelName
         return result;
     }
     
-    public async get{{pascalModelName}}List(model: {{pascalModelName}}Model): Promise<{{pascalModelName}}Model[]> {
+    public async get{{pascalModelName}}List(model: {{pascalModelName}}Model): Promise<{{pascalModelName}}ListModel> {
         const result = await this.selectList(model);
         return result;
     }

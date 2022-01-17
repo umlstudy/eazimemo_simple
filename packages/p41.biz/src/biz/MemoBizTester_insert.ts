@@ -6,7 +6,7 @@ import { AbsDao } from "@sejong/dao.firebase";
 async function main() {
   AbsDao.transaction(async (too:TranObjectOwner)=>{
     console.log("첫번째 레코드");
-    const memo = { "message": "Hello INSERTOK???", 'email': 'aaa@gmail.com' } as MemoModel;
+    const memo = { "message": "Hello INSERTOK???", 'creatorEmail': 'aaa@gmail.com' } as MemoModel;
     await MemoBiz.INS.insert(too, memo);
   })
     .catch(r => { 

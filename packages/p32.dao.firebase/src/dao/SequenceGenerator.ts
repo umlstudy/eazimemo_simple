@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import { Firestore } from "firebase/firestore/lite";
 import { FirebaseSequence } from "../util/firebase/FirebaseSequence";
 

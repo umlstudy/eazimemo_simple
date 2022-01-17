@@ -34,7 +34,7 @@ export const generateBiz = async (projectHome: string, tables: string[]): Promis
         const converted = SjTemplateUtil.convert(tmplString, data);
         fs.writeFileSync(bizLoc + "//" + pascalTableName + "Biz.ts", converted);
 
-        const exportStr = `export { ${pascalTableName}Biz } from \"./biz/${pascalTableName}Biz\";`;
+        const exportStr = `export { ${pascalTableName}Biz } from "./biz/${pascalTableName}Biz";`;
         exportClasses.push(exportStr);
     }
 

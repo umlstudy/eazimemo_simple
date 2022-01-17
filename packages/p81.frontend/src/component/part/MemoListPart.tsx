@@ -11,7 +11,6 @@ import { MemoItemWidget } from "../widget/MemoItemWidget";
 const endpoint = "http://localhost:5000/graphql";
 const query = `{
   getMemoList(memo: {}) {
-    message
   }
 }`;
 

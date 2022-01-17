@@ -1,6 +1,6 @@
 import { SjAssertUtil } from "@sejong/common";
 import { AbsDao, MemoDao } from "@sejong/dao.firebase";
-import { MemoModel, TranObjectOwner } from "@sejong/model";
+import { MemoListModel, MemoModel, TranObjectOwner } from "@sejong/model";
 import { AbsBiz } from "./AbsBiz";
 
 export abstract class AbsMemoBiz extends AbsBiz<MemoModel> {
@@ -22,7 +22,7 @@ export abstract class AbsMemoBiz extends AbsBiz<MemoModel> {
         return result;
     }
     
-    public async getMemoList(model: MemoModel): Promise<MemoModel[]> {
+    public async getMemoList(model: MemoModel): Promise<MemoListModel> {
         const result = await this.selectList(model);
         return result;
     }

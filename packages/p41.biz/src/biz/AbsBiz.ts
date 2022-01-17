@@ -1,5 +1,5 @@
 import { AbsDao } from "@sejong/dao.firebase";
-import { AbsModel, TranObjectOwner } from "@sejong/model";
+import { AbsListModel, AbsModel, TranObjectOwner } from "@sejong/model";
 
 export abstract class AbsBiz<M extends AbsModel> {
 
@@ -14,7 +14,7 @@ export abstract class AbsBiz<M extends AbsModel> {
         return this.getAbsDao().selectFirst({} as M);
     }
 
-    public async selectList(model:M): Promise<M[]> {
+    public async selectList(model:M): Promise<AbsListModel<M>> {
         return this.getAbsDao().selectList(model);
     }
 
