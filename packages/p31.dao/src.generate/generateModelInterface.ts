@@ -34,6 +34,7 @@ export const generateModelInterface = async (projectHome: string, tables: string
                 || camelColumnName === 'updatedAt'
                 || camelColumnName === 'creatorEmail'
                 || camelColumnName === 'updaterEmail'
+                || camelColumnName === 'id'
              ) {
                  continue;
             }

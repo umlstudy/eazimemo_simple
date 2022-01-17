@@ -7,7 +7,7 @@ export abstract class AbsIdBaseDao<M extends AbsIdBaseModel> extends AbsDao<M> {
 
     private getIdColumnName(): string {
         return SjChangeCaseUtil.convertCase(this.getTableName(), 'camel') + 'Id';
-    };
+    }
 
     public getCountColumn(): string {
         return this.getIdColumnName();

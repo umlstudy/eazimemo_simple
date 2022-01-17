@@ -1,14 +1,17 @@
-import { AbsIdBaseModel } from "./AbsIdBaseModel";
+import { AbsIdBaseModel, AbsListModel } from ".";
 
 export interface MemoModel extends AbsIdBaseModel {
-    memoId: number
     message: string
-    email: string
+}
+
+export interface MemoListModel extends AbsListModel<MemoModel> {
 }
 
 export interface UserModel extends AbsIdBaseModel {
-    userId: number
     email: string
     name: string
+}
+
+export interface UserListModel extends AbsListModel<UserModel> {
 }
 

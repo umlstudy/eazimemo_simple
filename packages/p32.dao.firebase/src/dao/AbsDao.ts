@@ -1,4 +1,4 @@
-import { AbsModel, TranObjectOwner } from "@sejong/model";
+import { AbsListModel, AbsModel, TranObjectOwner } from "@sejong/model";
 import { initializeApp } from "firebase/app";
 import { Firestore, getFirestore, runTransaction } from "firebase/firestore/lite";
 import { firebaseConfig } from "../FirebaseConfig";
@@ -11,8 +11,8 @@ export abstract class AbsDao<M extends AbsModel> {
     protected abstract getTableName(): string;
 
     public static async transaction(
-        codePart: (tranObjectOwner: TranObjectOwner)=>Promise<any>)
-        : Promise<any> {
+        codePart: (tranObjectOwner: TranObjectOwner) => Promise<unknown>)
+        : Promise<unknown> {
 
         const result = await runTransaction(fireStore, async (transaction) => {
             const tranObjectOwner = new TranObjectOwner(transaction);
@@ -38,9 +38,9 @@ export abstract class AbsDao<M extends AbsModel> {
         : Promise<M | null>;
 
     public abstract selectList(model: M)
-        : Promise<M[]>;
+        : Promise<AbsListModel<M>>;
 
     public abstract select(model: M
         , selectFirst: boolean)
-        : Promise<M[]>;
+        : Promise<AbsListModel<M>>;
 }

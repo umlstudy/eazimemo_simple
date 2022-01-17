@@ -1,5 +1,5 @@
 import { SjDataUtil, SjLogUtil } from "@sejong/common";
-import { AbsIdBaseModel, TranObjectOwner } from "@sejong/model";
+import { AbsIdBaseModel, AbsListModel, TranObjectOwner } from "@sejong/model";
 import { collection, doc, DocumentData, DocumentSnapshot, getDoc, getDocs, limit, Query, query, QueryConstraint, startAfter, Transaction } from "firebase/firestore/lite";
 import { AbsDao } from "./AbsDao";
 import { SequenceGenerator } from "./SequenceGenerator";
@@ -127,8 +127,8 @@ export abstract class AbsIdBaseDao<M extends AbsIdBaseModel> extends AbsDao<M> {
         : Promise<M | null> {
 
         const result = await this.select(model, true);
-        if (result.length > 0) {
-            return result[0];
+        if (result.models.length > 0) {
+            return result.models[0];
         } else {
             return null;
         }
@@ -139,13 +139,13 @@ export abstract class AbsIdBaseDao<M extends AbsIdBaseModel> extends AbsDao<M> {
     }
 
     public async selectList(model: M)
-        : Promise<M[]> {
+        : Promise<AbsListModel<M>> {
         return await this.select(model, false);
     }
 
     public async select(model: M
         , selectFirst: boolean)
-        : Promise<M[]> {
+        : Promise<AbsListModel<M>> {
         const q = await this.createQuery(model);
         const querySnapshot = await getDocs(q);
         const resultTmp = [] as M[];
@@ -167,8 +167,10 @@ export abstract class AbsIdBaseDao<M extends AbsIdBaseModel> extends AbsDao<M> {
 
         const result = await this.joining(resultTmp);
 
-        return result;
+        return this.createListModel(result);
     }
+
+    protected abstract createListModel(elements:M[]):AbsListModel<M>;
 
     private async createQuery(model: M)
         : Promise<Query<DocumentData>> {

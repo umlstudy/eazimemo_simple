@@ -1,10 +1,13 @@
-import { AbsIdBaseModel } from ".";
+import { AbsIdBaseModel, AbsListModel } from ".";
 
 {{#tables}}
 export interface {{pascalTableName}}Model extends AbsIdBaseModel {
     {{#columns}}
     {{columnName}}: {{columnType}}
     {{/columns}}
+}
+
+export interface {{pascalTableName}}ListModel extends AbsListModel<{{pascalTableName}}Model> {
 }
 
 {{/tables}}

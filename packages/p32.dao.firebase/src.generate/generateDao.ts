@@ -40,7 +40,7 @@ export const generateDao = async (projectHome: string, tables: string[]): Promis
         fs.writeFileSync(daoFileName, converted);
         console.log(daoFileName + ' created...');
 
-        const exportStr = `export { ${pascalTableName}Dao } from \"./dao/${pascalTableName}Dao\";`;
+        const exportStr = `export { ${pascalTableName}Dao } from "./dao/${pascalTableName}Dao";`;
         exportClasses.push(exportStr);
     }
 
