@@ -1,19 +1,21 @@
 import { SjLogUtil } from "@sejong/common";
+import { MemoListModel } from "@sejong/model";
+import { AbsValueOwnComponentProp } from "@sejong/react.common";
 import { request } from "graphql-request";
 import { ReactElement, useEffect, useState } from "react";
 import { ErrorPart } from "./ErrorPart";
+import { MemoItemWidget } from "../widget/MemoItemWidget";
 
 // const enum NetworkStatus { READY, LOADING, LOADING_OK, LOADING_ERROR }
 
 const endpoint = "http://localhost:5000/graphql";
 const query = `{
-  getMemoByPrimaryKey(memo: {id:"20"}) {
+  getMemoList(memo: {}) {
     message
   }
 }`;
 
-interface Bean {
-    object?:unknown;
+interface MemoListPartProp extends AbsValueOwnComponentProp<MemoListModel> {
     error?:Error;
     isLoading:boolean;
 }
@@ -21,7 +23,8 @@ interface Bean {
 export const MemoListPart = (): ReactElement => {
 
     // state
-    const [bean, setBean] = useState({isLoading:true} as Bean);
+    const [memoListPartProp, setMemoListPartProp] = useState(
+        { isLoading: true } as MemoListPartProp);
 
     // effect => componentDidMount/DidUpdate
     // https://xiubindev.tistory.com/100
@@ -36,10 +39,10 @@ export const MemoListPart = (): ReactElement => {
         request(endpoint, query).then((data: unknown) =>{
             SjLogUtil.debug("success request!!!");
             console.log(JSON.stringify(data, null, 2));
-            setBean({ isLoading: false, object:data } as Bean);
+            setMemoListPartProp({ isLoading: false, value: data } as MemoListPartProp);
         }).catch(e=>{
             console.log(e.toString());
-            setBean({ isLoading: false, error: e } as Bean);
+            setMemoListPartProp({ isLoading: false, error: e } as MemoListPartProp);
         });
         return () => {
             // cleanup
@@ -49,15 +52,19 @@ export const MemoListPart = (): ReactElement => {
 
     console.log("MemoListPart");
 
-
-
     const html = () => {
-        if ( bean.isLoading ) {
+        if (memoListPartProp.isLoading ) {
             return <div>Loading...</div>;
-        } else if ( bean.error ) {
-            return <ErrorPart error={bean.error}/>;
+        } else if (memoListPartProp.error ) {
+            return <ErrorPart error={memoListPartProp.error}/>;
         } else {
-            return <div>LoadingOk... {JSON.stringify(bean.object, null, 2)}</div>;
+            const memos = memoListPartProp.value.models;
+            SjLogUtil.debug("memoListPartProp #2 => " + JSON.stringify(memoListPartProp, null, 2));
+            SjLogUtil.debug("memos #2 => " + memos);
+            return <div>{memos.map(memo => (
+                <MemoItemWidget value={memo}></MemoItemWidget>
+            ))}
+                LoadingOk... {JSON.stringify(memoListPartProp.value, null, 2)}</div>;
         }
     };
 

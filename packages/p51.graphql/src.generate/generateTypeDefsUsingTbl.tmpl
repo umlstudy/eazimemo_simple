@@ -19,6 +19,7 @@ export const GenTableTypeDefs = gql`
   type Query
   {
     get{{pascalTableName}}ByPrimaryKey({{camelTableName}}: {{pascalTableName}}Input!): {{pascalTableName}}
+    get{{pascalTableName}}List({{camelTableName}}: {{pascalTableName}}Input!): [{{pascalTableName}}!]!
   }
   type Mutation {
     add{{pascalTableName}}({{camelTableName}}: {{pascalTableName}}Input!): {{pascalTableName}}!

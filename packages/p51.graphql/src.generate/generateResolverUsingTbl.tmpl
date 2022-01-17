@@ -1,5 +1,6 @@
 
 import { {{pascalModelName}}Biz } from "@sejong/biz";
+import { SjLogUtil } from "@sejong/common";
 import { AbsDao } from "@sejong/dao.firebase";
 import { TranObjectOwner } from "@sejong/model";
 
@@ -9,6 +10,7 @@ import { TranObjectOwner } from "@sejong/model";
 export const Gen{{pascalModelName}}Resolver = {
   Query: {
     get{{pascalModelName}}ByPrimaryKey: async (root: any, args: any) => get{{pascalModelName}}ByPrimaryKey(root, args),
+    get{{pascalModelName}}List: async (root: any, args: any) => get{{pascalModelName}}List(root, args),
   },
   Mutation: {
     add{{pascalModelName}}: async (root: any, args: any) => await add{{pascalModelName}}(root, args),
@@ -21,6 +23,13 @@ const get{{pascalModelName}}ByPrimaryKey = async (root: any, args: any) => {
   console.log(root);
   const { {{camelModelName}} } = args;
   return await {{pascalModelName}}Biz.INS.get{{pascalModelName}}ByPrimaryKey({{camelModelName}});
+}
+
+const get{{pascalModelName}}List = async (root: any, args: any) => {
+  console.log(root);
+  SjLogUtil.debug('get{{pascalModelName}}List...');
+  const { {{camelModelName}} } = args;
+  return await {{pascalModelName}}Biz.INS.get{{pascalModelName}}List({{camelModelName}});
 }
 
 const add{{pascalModelName}} = async (root: any, args: any) => {

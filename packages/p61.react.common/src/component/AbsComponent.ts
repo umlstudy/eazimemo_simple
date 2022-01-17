@@ -1,7 +1,7 @@
 import React from "react";
 
 export interface AbsComponentProp {
-    children: any;
+    children?: unknown;
 }
 export abstract class AbsComponent extends React.Component  {
     constructor(props: AbsComponentProp) {

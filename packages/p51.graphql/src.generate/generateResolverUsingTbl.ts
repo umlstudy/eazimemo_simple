@@ -28,7 +28,7 @@ export const generateResolverUsingTbl = async (projectHome: string, tables: stri
         const converted = SjTemplateUtil.convert(tmplString, data);
         fs.writeFileSync(targetLoc + "//Gen" + pascalTableName + "Resolver.ts", converted);
 
-        const exportStr = `export { ${pascalTableName}Biz } from \"./biz/${pascalTableName}Biz\";`;
+        const exportStr = `export { ${pascalTableName}Biz } from "./biz/${pascalTableName}Biz";`;
         exportClasses.push(exportStr);
     }
 

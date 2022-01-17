@@ -10,6 +10,7 @@ import { TranObjectOwner } from "@sejong/model";
 export const GenMemoResolver = {
   Query: {
     getMemoByPrimaryKey: async (root: any, args: any) => getMemoByPrimaryKey(root, args),
+    getMemoList: async (root: any, args: any) => getMemoList(root, args),
   },
   Mutation: {
     addMemo: async (root: any, args: any) => await addMemo(root, args),
@@ -20,15 +21,20 @@ export const GenMemoResolver = {
 
 const getMemoByPrimaryKey = async (root: any, args: any) => {
   console.log(root);
-  SjLogUtil.debug('getMemoByPrimaryKey...');
   const { memo } = args;
   return await MemoBiz.INS.getMemoByPrimaryKey(memo);
+}
+
+const getMemoList = async (root: any, args: any) => {
+  console.log(root);
+  SjLogUtil.debug('getMemoList...');
+  const { memo } = args;
+  return await MemoBiz.INS.getMemoList(memo);
 }
 
 const addMemo = async (root: any, args: any) => {
   console.log(root);
   const { memo } = args;
-  SjLogUtil.debug('addMemo...');
   const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
     const memoAdded = await MemoBiz.INS.addMemo(too, memo);
     return memoAdded;
@@ -48,7 +54,6 @@ const removeMemo = async (root: any, args: any) => {
 
 const updateMemo = async (root: any, args: any) => {
   console.log(root);
-  SjLogUtil.debug('updateMemo...');
   const { memo } = args;
   const result = await AbsDao.transaction(async (too:TranObjectOwner):Promise<any> => {
     const memoUpdated = await MemoBiz.INS.updateMemo(too, memo);

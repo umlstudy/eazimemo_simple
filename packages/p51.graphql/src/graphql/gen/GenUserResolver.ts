@@ -1,5 +1,6 @@
 
 import { UserBiz } from "@sejong/biz";
+import { SjLogUtil } from "@sejong/common";
 import { AbsDao } from "@sejong/dao.firebase";
 import { TranObjectOwner } from "@sejong/model";
 
@@ -9,6 +10,7 @@ import { TranObjectOwner } from "@sejong/model";
 export const GenUserResolver = {
   Query: {
     getUserByPrimaryKey: async (root: any, args: any) => getUserByPrimaryKey(root, args),
+    getUserList: async (root: any, args: any) => getUserList(root, args),
   },
   Mutation: {
     addUser: async (root: any, args: any) => await addUser(root, args),
@@ -21,6 +23,13 @@ const getUserByPrimaryKey = async (root: any, args: any) => {
   console.log(root);
   const { user } = args;
   return await UserBiz.INS.getUserByPrimaryKey(user);
+}
+
+const getUserList = async (root: any, args: any) => {
+  console.log(root);
+  SjLogUtil.debug('getUserList...');
+  const { user } = args;
+  return await UserBiz.INS.getUserList(user);
 }
 
 const addUser = async (root: any, args: any) => {

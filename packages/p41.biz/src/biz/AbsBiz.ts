@@ -14,6 +14,10 @@ export abstract class AbsBiz<M extends AbsModel> {
         return this.getAbsDao().selectFirst({} as M);
     }
 
+    public async selectList(model:M): Promise<M[]> {
+        return this.getAbsDao().selectList(model);
+    }
+
     protected abstract validate4Insert(model: M):void;
 
     public async insert(too: TranObjectOwner, model: M): Promise<number> {

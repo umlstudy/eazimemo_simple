@@ -4,7 +4,6 @@ import { ReactElement } from "react";
 import { MemoListPart } from "../part/MemoListPart";
 
 export interface MemoListPageProp extends AbsValueOwnComponentProp<MemoListModel> {
-    value: MemoListModel;
 }
 
 export default class MemoListPage extends AbsValueOwnComponent<MemoListModel> {

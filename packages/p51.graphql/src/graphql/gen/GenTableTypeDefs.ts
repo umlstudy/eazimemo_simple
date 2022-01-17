@@ -24,6 +24,7 @@ export const GenTableTypeDefs = gql`
   type Query
   {
     getMemoByPrimaryKey(memo: MemoInput!): Memo
+    getMemoList(memo: MemoInput!): [Memo!]!
   }
   type Mutation {
     addMemo(memo: MemoInput!): Memo!
@@ -50,6 +51,7 @@ export const GenTableTypeDefs = gql`
   type Query
   {
     getUserByPrimaryKey(user: UserInput!): User
+    getUserList(user: UserInput!): [User!]!
   }
   type Mutation {
     addUser(user: UserInput!): User!
