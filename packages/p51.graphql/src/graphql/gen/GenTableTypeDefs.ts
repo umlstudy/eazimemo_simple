@@ -13,6 +13,9 @@ export const GenTableTypeDefs = gql`
     createdAt: Int
     updatedAt: Int
   }
+  type MemoList {
+    models:[Memo]
+  }
   input MemoInput {
     id: String
     message: String
@@ -24,7 +27,7 @@ export const GenTableTypeDefs = gql`
   type Query
   {
     getMemoByPrimaryKey(memo: MemoInput!): Memo
-    getMemoList(memo: MemoInput!): [Memo!]!
+    getMemoList(memo: MemoInput!): MemoList
   }
   type Mutation {
     addMemo(memo: MemoInput!): Memo!
@@ -41,6 +44,9 @@ export const GenTableTypeDefs = gql`
     createdAt: Int
     updatedAt: Int
   }
+  type UserList {
+    models:[User]
+  }
   input UserInput {
     id: String
     email: String
@@ -51,7 +57,7 @@ export const GenTableTypeDefs = gql`
   type Query
   {
     getUserByPrimaryKey(user: UserInput!): User
-    getUserList(user: UserInput!): [User!]!
+    getUserList(user: UserInput!): UserList
   }
   type Mutation {
     addUser(user: UserInput!): User!

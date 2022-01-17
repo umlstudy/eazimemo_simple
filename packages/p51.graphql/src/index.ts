@@ -1,6 +1,9 @@
 // nodemon packages/p51.graphql/src/index.ts
 // npx ts-node packages/p51.graphql/src/index.ts
 
+// compile
+// cd packages/p51.graphql;rm -rf dist;tsc;cd ../..
+
 import { ApolloServer } from "apollo-server";
 import { AppSchema } from "./AppSchema";
 

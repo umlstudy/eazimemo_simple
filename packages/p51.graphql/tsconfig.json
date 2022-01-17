@@ -12,8 +12,8 @@
     "strict": true, /* Enable all strict type-checking options. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "exclude": [ "src/sample/imsi", "dist",
-    "src.generate", "src.generate.all",
-    "node_modules"
+  "exclude": [ "src/sample/imsi" ],
+  "include": [
+    "src"
   ]
 }

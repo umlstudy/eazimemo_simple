@@ -11,6 +11,9 @@ export const GenTableTypeDefs = gql`
     {{columnName}}: {{columnType}}
     {{/columns}}
   }
+  type {{pascalTableName}}List {
+    models:[{{pascalTableName}}]
+  }
   input {{pascalTableName}}Input {
     {{#columns}}
     {{columnName}}: {{columnType}}
@@ -19,7 +22,7 @@ export const GenTableTypeDefs = gql`
   type Query
   {
     get{{pascalTableName}}ByPrimaryKey({{camelTableName}}: {{pascalTableName}}Input!): {{pascalTableName}}
-    get{{pascalTableName}}List({{camelTableName}}: {{pascalTableName}}Input!): [{{pascalTableName}}!]!
+    get{{pascalTableName}}List({{camelTableName}}: {{pascalTableName}}Input!): {{pascalTableName}}List
   }
   type Mutation {
     add{{pascalTableName}}({{camelTableName}}: {{pascalTableName}}Input!): {{pascalTableName}}!

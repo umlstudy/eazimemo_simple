@@ -11,6 +11,10 @@ import { MemoItemWidget } from "../widget/MemoItemWidget";
 const endpoint = "http://localhost:5000/graphql";
 const query = `{
   getMemoList(memo: {}) {
+    models {
+      id
+      message
+    }
   }
 }`;
 
@@ -37,8 +41,9 @@ export const MemoListPart = (): ReactElement => {
         SjLogUtil.debug("MemoListPart useEffect -> effect");
         request(endpoint, query).then((data: unknown) =>{
             SjLogUtil.debug("success request!!!");
-            console.log(JSON.stringify(data, null, 2));
-            setMemoListPartProp({ isLoading: false, value: data } as MemoListPartProp);
+            const modelList = (data as any).getMemoList;
+            console.log(JSON.stringify(modelList, null, 2));
+            setMemoListPartProp({ isLoading: false, value: modelList } as MemoListPartProp);
         }).catch(e=>{
             console.log(e.toString());
             setMemoListPartProp({ isLoading: false, error: e } as MemoListPartProp);
