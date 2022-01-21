@@ -2,73 +2,87 @@ import {
   ApolloClient, ApolloProvider, InMemoryCache
 } from "@apollo/client";
 import { Button } from "@mui/material";
+import { SjLogUtil } from "@sejong/common";
 import { SjButton, SjButton2 } from "@sejong/react.common";
 import { ReactElement, useState } from 'react';
 import GoogleLogin, { GoogleLogout } from "react-google-login";
-import MemoListPage from "./component/page/MemoListPage";
-import SjButton3 from "./SjButton3";
 import { googleConfig } from "./GoogleConfig";
+import SjButton3 from "./SjButton3";
 
 const client = new ApolloClient({
   uri: 'https://48p1r2roz4.sse.codesandbox.io',
   cache: new InMemoryCache()
 });
 
-const googleClientId = '617246850621-95f9qhmehd380g2df86pjhrqc84n8nij.apps.googleusercontent.com'
-
-const success = (response:unknown) => {
-  console.log(response) // eslint-disable-line
-}
-
-const error = (response: unknown) => {
-  console.error(response) // eslint-disable-line
-}
-
-const loading = () => {
-  console.log('loading') // eslint-disable-line
-}
+const googleClientId = googleConfig.clientId;
 
 
-const MountTest = () => {
-  const [showButton, toggleShow] = useState(true)
+const LoginAndOut = () => {
 
-  if (showButton) {
-    return (
-      <GoogleLogin
-        onSuccess={res => {
-          toggleShow(false)
-          success(res)
-        }}
-        onFailure={error}
-        clientId={googleClientId}
-        redirectUri="http://localhost:3000/"
-      >
-        Auth then Hide button
-      </GoogleLogin>
-    )
-  }
+  const [userEmail, setUserEmail] = useState(null);
 
-  return <button onClick={() => toggleShow(true)}>show button</button>
+  const responseGoogle = (response: any) => {
+    SjLogUtil.debug("responseGoogle");
+    SjLogUtil.debug("user_email => " + response.profileObj.email);
+    SjLogUtil.debug("user_email => " + response.profileObj.googleId);
+    SjLogUtil.debug("user_email => " + response.profileObj.name);
+
+    window.localStorage.setItem("user_id", response.profileObj.googleId);
+    window.localStorage.setItem("user_email", response.profileObj.email);
+    window.localStorage.setItem("user_name", response.profileObj.name);
+    setUserEmail(response.profileObj.email);
+
+  };
+
+  const responseGoogleFail = (response: any) => {
+    SjLogUtil.debug("responseGoogleFail");
+    console.log(response.details);
+    alert(response.details);
+  };
+
+  const logout = () => {
+    window.localStorage.removeItem("user_id");
+    window.localStorage.removeItem("user_email");
+    window.localStorage.removeItem("user_name");
+  };
+
+  const logoutFail = () => {
+    SjLogUtil.debug("FAIL!!!!!!!!!!!!!!!!!!!!!");
+  };
+
+  SjLogUtil.debug("== render ==>> " + userEmail);
+  return (
+    <>
+    {
+        userEmail === null ? (
+        <GoogleLogin
+          clientId={googleClientId}
+          buttonText="로그인"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogleFail}
+          cookiePolicy={'single_host_origin'}
+          scope="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
+        />
+        ) : (
+          <>
+            <div> {window.localStorage.getItem("user_name")}님({userEmail}) </div>
+            <GoogleLogout
+              clientId={googleClientId}
+              buttonText="로그아웃"
+                onLogoutSuccess={logout}
+                onFailure={logoutFail}
+              />
+          </>
+        )
+    }
+    </>
+  )
 }
 
 // https://react.vlpt.us/basic/13-array-insert.html
 function App():ReactElement {
-  const responseGoogle = (response:unknown) => {
-    // alert('ACCCCCCCCCCCCC');
-    console.log("AAAAAAAAAAAAAAAA");
 
-    console.log(response);
-    console.log("BBBBBBBBBBBBBBBBBBB");
-    // alert('CCCCCCCCCCCCC');
-  };
-
-
-  const logout = () => {
-    console.log('logout');
-    console.log('logout2');
-    console.log('logout3');
-  }
-
+  // <MemoListPage></MemoListPage>
   return (
     <ApolloProvider client={client}>
       <div>hello</div>
@@ -78,69 +92,9 @@ function App():ReactElement {
       <SjButton3/>
       <SjButton2/>
       <SjButton>김김용용</SjButton>
-      <MemoListPage></MemoListPage>
       <br/>
-      <GoogleLogin
-        clientId={googleConfig.clientId}
-        buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        scope="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
-      />
       <div>
-        <MountTest />
-        <br />
-        <br />
-        <GoogleLogin
-          clientId={googleClientId}
-          scope="https://www.googleapis.com/auth/analytics"
-          onSuccess={success}
-          onFailure={error}
-          onRequest={loading}
-          responseType="id_token"
-          isSignedIn
-          theme="dark"
-        // disabled
-        // prompt="consent"
-        // className='button'
-        // style={{ color: 'red' }}
-        >
-          <span>Analytics</span>
-        </GoogleLogin>
-        <br />
-        <br />
-        <GoogleLogin
-          clientId={googleClientId}
-          scope="https://www.googleapis.com/auth/adwords"
-          onSuccess={success}
-          onFailure={error}
-          onRequest={loading}
-          responseType="code"
-        // uxMode="redirect"
-        // redirectUri="http://google.com"
-        // disabled
-        // prompt="consent"
-        // className='button'
-        // style={{ color: 'red' }}
-        >
-          <span>Adwords</span>
-        </GoogleLogin>
-        <br />
-        <br />
-        <GoogleLogin onSuccess={success} onFailure={error} clientId={googleClientId} />
-        <br />
-        <br />
-        <GoogleLogin theme="dark" onSuccess={success} onFailure={error} clientId={googleClientId} />
-        <br />
-        <br />
-        <GoogleLogin theme="dark" style={{ background: 'blue' }} onSuccess={success} onFailure={error} clientId={googleClientId} 
-        redirectUri="http://localhost:3000/"/>
-        <br />
-        <br />
-        <GoogleLogout 
-          clientId={googleClientId} 
-          buttonText="Logout" 
-          onLogoutSuccess={logout} />
+        <LoginAndOut/>
       </div>
     </ApolloProvider>
   );

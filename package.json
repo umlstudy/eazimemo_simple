@@ -13,7 +13,8 @@
     "start.model": "nodemon packages/p21.model/dist/index.js",
     "ctrldev": "nodemon 'packages/p51.ctrl/src/index.ts' --exec ts-node packages/p51.ctrl/src/index.ts -e ts,graphql",
     "ctrldev3": "nodemon 'packages/p51.ctrl/src/server.ts' --exec 'ts-node' packages/p51.ctrl/src/server.ts -e ts,graphql",
-    "ctrldev2": "cd packages/p51.ctrl;nodemon packages/p51.ctrl/dist/index.js;cd ../.."
+    "ctrldev2": "cd packages/p51.ctrl;nodemon packages/p51.ctrl/dist/index.js;cd ../..",
+    "start:debug": "node --inspect-brk=5858 ./server/index.js"
   },
   "dependencies": {},
   "devDependencies": {
